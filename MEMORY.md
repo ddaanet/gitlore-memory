@@ -12,3 +12,4 @@
 - [plan as late as possible](feedback_plan_late.md) — don't plan beyond next iteration; write Plan N+1 after Plan N ships
 - [CC project-dir encoding](reference_cc_project_dir_encoding.md) — `~/.claude/projects/<name>/` mangling rule; reverse-engineered, edify's impl is incomplete
 - [outside-in TDD when architecture is fixed](feedback_outside_in_tdd.md) — red e2e first, drive units by failure; black-box tests survive refactors
+- [dogfood early](feedback_dogfood_early.md) — run new code on the actual production target the day it ships; fixtures miss real-world bugs
