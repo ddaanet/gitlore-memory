@@ -1,8 +1,10 @@
 ---
 name: feedback-dogfood-early
 description: Run new code on the actual production target as soon as it ships — not just on test fixtures — because self-application surfaces bugs that synthetic harnesses miss
-metadata:
+metadata: 
+  node_type: memory
   type: feedback
+  originSessionId: 7dd65fa7-001f-45cd-a975-fcab4433bdf5
 ---
 
 When a self-contained slice ships, run it on the real target the same day. Don't wait for "the next plan that builds on this" to validate the previous one. Treat surprises as patches to the just-shipped plan, not as scope for the next.

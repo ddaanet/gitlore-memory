@@ -13,3 +13,19 @@
 - [CC project-dir encoding](reference_cc_project_dir_encoding.md) — `~/.claude/projects/<name>/` mangling rule; reverse-engineered, edify's impl is incomplete
 - [outside-in TDD when architecture is fixed](feedback_outside_in_tdd.md) — red e2e first, drive units by failure; black-box tests survive refactors
 - [dogfood early](feedback_dogfood_early.md) — run new code on the actual production target the day it ships; fixtures miss real-world bugs
+- [default to automation](feedback_automate_default.md) — pick manual tests only when automation costs disproportionately more than the value
+- [Plan 02 Dogfood B surprises](feedback_dogfood_b.md) — `.gitmodules` gitignored + gh `--source=.` rejects gitfile submodule
+- [verify handoff "pending" claims](feedback_verify_handoff_pending.md) — check commits + current code before treating handoff-noted feedback as outstanding
+- [self-contained directives](feedback_self_contained_directives.md) — emit absolute paths + explicit cd; never rely on sub-agent's env or CWD
+- [CC agent discovery](reference_cc_agent_discovery.md) — cwd `agents/` not auto-loaded; plugin must be marketplace-installed for sub-agent dispatch
+- [large docs review](feedback_large_docs_review.md) — for big plan/spec docs, flag high-risk sections explicitly rather than asking for full eyeball pass
+- [plan length matches work](feedback_plan_length_matches_work.md) — don't write 700 lines of plan for 7 commands of work; reserve full specs for actual design decisions
+- [zellij IPC sandbox](reference_zellij_ipc_sandbox.md) — `zellij run`/`action` need dangerouslyDisableSandbox=true; relevant for /revdiff:revdiff launcher
+- [git hook env leak](reference_git_hook_env_leak.md) — git sets GIT_DIR/GIT_INDEX_FILE/GIT_WORK_TREE; submodule-aware hooks must unset before `git -C <submodule>`
+- [CC sub-agent approval](reference_cc_subagent_approval.md) — two-turn return → SendMessage(approval) pattern; sub-agents have no addressable parent in one-shot dispatch
+- [no hand-run tests](feedback_no_handrun_tests.md) — encode behavior in the bats suite; reserve manual runs for dogfooding the real product
+- [verify delegated citations](feedback_verify_delegated_citations.md) — check author/title/venue specifics of agent-returned sources, not just URL existence; re-run code an agent claims it verified
+- [memory before root commit](feedback_memory_before_root_commit.md) — commit the memory submodule's changes before the root repo commit; don't root-commit over a dirty submodule
+- [autoMemoryDirectory setting](reference_auto_memory_directory.md) — gitlore points CC's autoMemoryDirectory at the memory/ submodule; set by install + session-start hook, effective next session
+- [spec vs code fact-check at writing-plans](feedback_spec_vs_code.md) — grep spec symbols against the codebase before writing test fixtures; spec concepts can drift from production semantics
+- [harden human gates, not controlled channels](feedback_harden_human_gates.md) — apply word-boundary/escape recognition where a human types free-text, not on channels whose producer you control
