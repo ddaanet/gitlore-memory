@@ -29,3 +29,10 @@
 - [autoMemoryDirectory setting](reference_auto_memory_directory.md) — gitlore points CC's autoMemoryDirectory at the memory/ submodule; set by install + session-start hook, effective next session
 - [spec vs code fact-check at writing-plans](feedback_spec_vs_code.md) — grep spec symbols against the codebase before writing test fixtures; spec concepts can drift from production semantics
 - [harden human gates, not controlled channels](feedback_harden_human_gates.md) — apply word-boundary/escape recognition where a human types free-text, not on channels whose producer you control
+- [handoff files are tooling-managed](feedback_handoff_files_managed.md) — don't hand-edit `.claude/handoff*.md` mid-session; write only via the handoff skill
+- [CC command namespacing](reference_cc_command_namespacing.md) — `/<plugin>:<path-under-commands>`; keep commands flat or you get a double prefix
+- [cross-repo push auth](reference_cross_repo_push_auth.md) — pushing outside session cwd is classifier-denied; `/add-dir` authorizes it, removing ask rules doesn't
+- [plugin cache staleness](reference_plugin_cache_staleness.md) — marketplace cache lags the repo at the same version string; verify loaded source before trusting plugin-code verification
+- [plugin recurse-clone submodule](reference_plugin_recurse_clone.md) — `/plugin install` recurse-clones; a committed submodule needs an absolute, public url or install aborts
+- [revdiff iTerm/tmux-CC popup](reference_revdiff_iterm_tmux_cc.md) — `display-popup` invisible under tmux-CC/multi-client; use `new-window` + a script file
+- [hourglass display + stopped-state caching](reference_hourglass_display_caching.md) — displayed time = last API call + 1h; stopped states cached ~60 min
