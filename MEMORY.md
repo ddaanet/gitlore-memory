@@ -37,3 +37,4 @@
 - [revdiff iTerm/tmux-CC popup](reference_revdiff_iterm_tmux_cc.md) — `display-popup` invisible under tmux-CC/multi-client; use `new-window` + a script file
 - [hourglass display + stopped-state caching](reference_hourglass_display_caching.md) — displayed time = last API call + 1h; stopped states cached ~60 min
 - [`!` shell shares agent cwd](reference_bang_shell_shared_cwd.md) — user's `!` command runs where the agent's last `cd` left the shell; make `!` commands cwd-independent
+- [session title via custom-title transcript entry](reference_session_title_customtitle.md) — no hook-output field; `/rename` writes a `custom-title` jsonl line; a hook can append one to `transcript_path`
