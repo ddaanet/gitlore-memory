@@ -11,4 +11,4 @@ In the gitlore repo, run `git status` with `dangerouslyDisableSandbox: true`. Th
 
 **Why:** The sandbox mounts/overlays user dotfiles into the working directory view, so `git status` reports them as untracked. Unsandboxed, the working tree is actually clean.
 
-**How to apply:** Default to `dangerouslyDisableSandbox: true` for `git status` (and likely other git inspection commands like `git ls-files --others`) in this repo. Don't waste a turn showing the user the polluted output first.
+**How to apply:** ALWAYS run `git status` (and other git inspection commands like `git ls-files --others`) with `dangerouslyDisableSandbox: true` in this repo — not "default to," always. Recognition cue: if a `git status` shows untracked `.bashrc`/`.bash_profile`/`.claude/agents`/`.claude/commands`/`.claude/skills`/`.zshrc`/`.idea`/`.vscode`/`.mcp.json`/`.gitconfig` etc., you ran it sandboxed — those are the artifacts; re-run unsandboxed before reporting tree state or commit counts (sandboxed `??` noise also obscures the real ahead/behind picture). Don't waste a turn showing the user the polluted output first, and don't rationalize the dotfiles away as "just home-dir files."
