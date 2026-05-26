@@ -25,7 +25,7 @@
 - [CC sub-agent approval](reference_cc_subagent_approval.md) — two-turn return → SendMessage(approval) pattern; sub-agents have no addressable parent in one-shot dispatch
 - [no hand-run tests](feedback_no_handrun_tests.md) — encode behavior in the bats suite; reserve manual runs for dogfooding the real product
 - [verify delegated citations](feedback_verify_delegated_citations.md) — check author/title/venue specifics of agent-returned sources, not just URL existence; re-run code an agent claims it verified
-- [memory before root commit](feedback_memory_before_root_commit.md) — commit the memory submodule's changes before the root repo commit; don't root-commit over a dirty submodule
+- [memory submodule lockstep](feedback_memory_before_root_commit.md) — commit memory/ before the root commit AND push it alongside every parent push; never leave it dirty or ahead
 - [autoMemoryDirectory setting](reference_auto_memory_directory.md) — gitlore points CC's autoMemoryDirectory at the memory/ submodule; set by install + session-start hook, effective next session
 - [spec vs code fact-check at writing-plans](feedback_spec_vs_code.md) — grep spec symbols against the codebase before writing test fixtures; spec concepts can drift from production semantics
 - [harden human gates, not controlled channels](feedback_harden_human_gates.md) — apply word-boundary/escape recognition where a human types free-text, not on channels whose producer you control

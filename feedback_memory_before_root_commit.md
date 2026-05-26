@@ -1,14 +1,16 @@
 ---
 name: feedback_memory_before_root_commit
-description: "commit the memory submodule's changes before the root repo commit, so root records an advanced (not stale/dirty) submodule pointer"
+description: "keep memory/ submodule in lockstep with the parent: commit it before the root commit, and always push it alongside the parent push"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: 9df0bd20-256d-4cbe-b942-fddde0f211b9
 ---
 
-When committing the root gitlore repo, commit pending changes in the `memory/` submodule **first**, then make the root commit. Do not root-commit while `git -C memory status` is dirty.
+Keep the `memory/` submodule in lockstep with the parent repo across the full persist cycle:
+1. **Commit** pending submodule changes **before** the root commit — don't root-commit while `git -C memory status` is dirty.
+2. **Push** the submodule **whenever you push the parent** — don't leave `memory/` ahead of its remote after the root push lands.
 
-**Why:** gitlore's model is git-backed memory — the submodule is the source of truth and should be persisted before the pointer that references it. A root commit made over a dirty submodule leaves memory uncommitted and the recorded pointer stale, defeating the versioning the tool exists to provide.
+**Why:** gitlore's model is git-backed memory — the submodule is the source of truth and should be persisted before the pointer that references it. A root commit made over a dirty submodule leaves memory uncommitted and the recorded pointer stale. Likewise, pushing the parent but not the submodule publishes a pointer to commits no one else can fetch — the shared memory is unreachable, defeating the versioning the tool exists to provide.
 
-**How to apply:** before any root `git commit`, run `git -C memory status` (unsandboxed per [[feedback_git_status_sandbox]]). If dirty, resolve/commit inside the submodule first (the pre-commit/pre-push hook machinery handles the worktree→live commit-and-push; see [[reference_git_hook_env_leak]]), then stage the updated submodule pointer in the root commit. If the submodule changes are unfamiliar leftovers, surface them rather than blindly committing — [[feedback_verify_handoff_pending]].
+**How to apply:** before any root `git commit`, run `git -C memory status` (unsandboxed per [[feedback_git_status_sandbox]]). If dirty, resolve/commit inside the submodule first (the pre-commit/pre-push hook machinery handles the worktree→live commit-and-push; see [[reference_git_hook_env_leak]]), then stage the updated submodule pointer in the root commit. Whenever you push the parent (or it gets pushed for you, e.g. by a release recipe), also `git -C memory push` so both remotes advance together. Cross-repo/submodule pushes are classifier-gated — if denied, surface the push command for the user rather than dropping it ([[reference_cross_repo_push_auth]]). If the submodule changes are unfamiliar leftovers, surface them rather than blindly committing — [[feedback_verify_handoff_pending]].
