@@ -4,6 +4,7 @@
 - [gitmoji commit convention](feedback_gitmoji.md) — conventional commit prefixes required, hook from devddaanet
 - [living design doc structure](feedback_design_doc_structure.md) — six-section pattern for docs/design.md
 - [agent executes, scripts decide](feedback_agent_executes.md) — detection logic in shell scripts, not agent reasoning
+- [skill vs command](feedback_skill_vs_command.md) — self-triggering skill when condition is mechanical/detectable; command only for explicit user-initiated actions
 - [fact-check before incorporating](feedback_fact_check.md) — verify user corrections against training knowledge, don't just defer
 - [loose generation + post-hoc fix](feedback_loose_generation.md) — let generator scaffold freely, constrain at artifact boundary
 - [user: technical depth on LLM mechanism](user_technical_depth.md) — expects rigorous attention/cost/training claims, not hand-waving
