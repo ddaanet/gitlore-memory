@@ -23,6 +23,7 @@
 - [plan length matches work](feedback_plan_length_matches_work.md) — don't write 700 lines of plan for 7 commands of work; reserve full specs for actual design decisions
 - [zellij IPC sandbox](reference_zellij_ipc_sandbox.md) — `zellij run`/`action` need dangerouslyDisableSandbox=true; relevant for /revdiff:revdiff launcher
 - [git hook env leak](reference_git_hook_env_leak.md) — git sets GIT_DIR/GIT_INDEX_FILE/GIT_WORK_TREE; submodule-aware hooks must unset before `git -C <submodule>`
+- [submodule escape to parent](reference_submodule_escape_to_parent.md) — git -C/cd into an unchecked-out submodule operates on the parent; guard with `[ -e path/.git ]`; linked-worktree = git-dir≠common-dir
 - [CC sub-agent approval](reference_cc_subagent_approval.md) — two-turn return → SendMessage(approval) pattern; sub-agents have no addressable parent in one-shot dispatch
 - [no hand-run tests](feedback_no_handrun_tests.md) — encode behavior in the bats suite; reserve manual runs for dogfooding the real product
 - [verify delegated citations](feedback_verify_delegated_citations.md) — check author/title/venue specifics of agent-returned sources, not just URL existence; re-run code an agent claims it verified
@@ -40,3 +41,4 @@
 - [`!` shell shares agent cwd](reference_bang_shell_shared_cwd.md) — user's `!` command runs where the agent's last `cd` left the shell; make `!` commands cwd-independent
 - [session title via custom-title transcript entry](reference_session_title_customtitle.md) — no hook-output field; `/rename` writes a `custom-title` jsonl line; a hook can append one to `transcript_path`
 - [preflight stays generic](feedback_preflight_stays_generic.md) — project-specific release gates go in the project's Makefile/CI, not ddaa:preflight
+- [PostToolUse additionalContext in --print mode](feedback_posttooluse_print_mode.md) — hook runs but additionalContext does not inject; affects eval design on feat-evals branch
