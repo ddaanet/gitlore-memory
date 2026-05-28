@@ -42,3 +42,4 @@
 - [session title via custom-title transcript entry](reference_session_title_customtitle.md) — no hook-output field; `/rename` writes a `custom-title` jsonl line; a hook can append one to `transcript_path`
 - [preflight stays generic](feedback_preflight_stays_generic.md) — project-specific release gates go in the project's Makefile/CI, not ddaa:preflight
 - [PostToolUse additionalContext in --print mode](feedback_posttooluse_print_mode.md) — hook runs but additionalContext does not inject; affects eval design on feat-evals branch
+- [strict sandbox blocks git writes](feedback_strict_sandbox_git.md) — dangerouslyDisableSandbox disabled in strict mode; git add/commit need user `!` or sandbox toggle
