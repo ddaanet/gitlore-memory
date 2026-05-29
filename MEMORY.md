@@ -32,6 +32,7 @@
 - [spec vs code fact-check at writing-plans](feedback_spec_vs_code.md) — grep spec symbols against the codebase before writing test fixtures; spec concepts can drift from production semantics
 - [harden human gates, not controlled channels](feedback_harden_human_gates.md) — apply word-boundary/escape recognition where a human types free-text, not on channels whose producer you control
 - [handoff files are tooling-managed](feedback_handoff_files_managed.md) — don't hand-edit `.claude/handoff*.md` mid-session; write only via the handoff skill
+- [handoff rides the code commit](feedback_handoff_with_commit.md) — fold handoff files into the same commit as the work; no separate snapshot commit
 - [CC command namespacing](reference_cc_command_namespacing.md) — `/<plugin>:<path-under-commands>`; keep commands flat or you get a double prefix
 - [cross-repo push auth](reference_cross_repo_push_auth.md) — pushing outside session cwd is classifier-denied; `/add-dir` authorizes it, removing ask rules doesn't
 - [plugin cache staleness](reference_plugin_cache_staleness.md) — marketplace cache lags the repo at the same version string; verify loaded source before trusting plugin-code verification
