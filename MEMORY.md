@@ -1,7 +1,7 @@
 # Memory Index
 
 - [gitlore project overview](project_overview.md) — current state, next steps, design doc location
-- [gitmoji commit convention](feedback_gitmoji.md) — conventional commit prefixes required, hook from devddaanet
+- [gitmoji commit convention](feedback_gitmoji.md) — conventional commit prefixes required, plugin-managed commit-msg hook
 - [living design doc structure](feedback_design_doc_structure.md) — six-section pattern for docs/design.md
 - [agent executes, scripts decide](feedback_agent_executes.md) — detection logic in shell scripts, not agent reasoning
 - [skill vs command](feedback_skill_vs_command.md) — self-triggering skill when condition is mechanical/detectable; command only for explicit user-initiated actions

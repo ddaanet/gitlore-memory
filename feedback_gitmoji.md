@@ -7,7 +7,7 @@ metadata:
   originSessionId: a22fb06e-e320-4708-8c2f-18da35422b19
 ---
 
-Commits in this repo use conventional commit prefixes (`feat:`, `fix:`, `docs:`, `chore:`, `test:`, etc.). A commit-msg hook prepends a gitmoji emoji based on the prefix word and then leaves the message otherwise intact. The hook is `/Users/david/code/devddaanet/scripts/gitmoji.sh` (config alongside).
+Commits in this repo use conventional commit prefixes (`feat:`, `fix:`, `docs:`, `chore:`, `test:`, etc.). A commit-msg hook prepends a gitmoji emoji based on the prefix word and then leaves the message otherwise intact. The hook is installed and managed by the gitmoji plugin: it materializes `.git/hooks/commit-msg` (marked `gitmoji-plugin-installed`) on SessionStart, with the bundled `.git/hooks/gitmoji.sh` + `.git/hooks/gitmoji.cfg` alongside. It is not a tracked file in any repo. (Previously a homegrown `devddaanet/scripts/gitmoji.sh` served this role; that was retired when the plugin took over.)
 
 **Mappings observed in this repo's history:**
 - `feat:` → `✨`
