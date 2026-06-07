@@ -44,3 +44,5 @@
 - [preflight stays generic](feedback_preflight_stays_generic.md) — project-specific release gates go in the project's Makefile/CI, not ddaa:preflight
 - [PostToolUse additionalContext in --print mode](feedback_posttooluse_print_mode.md) — hook runs but additionalContext does not inject; affects eval design on feat-evals branch
 - [strict sandbox blocks git writes](feedback_strict_sandbox_git.md) — dangerouslyDisableSandbox disabled in strict mode; git add/commit need user `!` or sandbox toggle
+- [memory retrieval in practice](feedback_memory_retrieval_in_practice.md) — MEMORY.md one-liners are the real content; individual files never read spontaneously, only on explicit prompt
+- [recall checkpoints](feedback_recall_checkpoints.md) — spontaneous recall is nil; embed explicit checkpoints in calling skills; two points in design tasks: early (input) and late (post-exploration)
