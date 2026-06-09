@@ -46,3 +46,4 @@
 - [strict sandbox blocks git writes](feedback_strict_sandbox_git.md) — dangerouslyDisableSandbox disabled in strict mode; git add/commit need user `!` or sandbox toggle
 - [memory retrieval in practice](feedback_memory_retrieval_in_practice.md) — MEMORY.md one-liners are the real content; individual files never read spontaneously, only on explicit prompt
 - [recall checkpoints](feedback_recall_checkpoints.md) — spontaneous recall is nil; embed explicit checkpoints in calling skills; two points in design tasks: early (input) and late (post-exploration)
+- [submodule config visibility](reference_submodule_config_visibility.md) — hooks firing inside the submodule read its own config, not the parent's; mirror parent-pinned keys (D12 gate)
