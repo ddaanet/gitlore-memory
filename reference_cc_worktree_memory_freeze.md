@@ -21,12 +21,18 @@ empirically 2026-06-10 (CC 2.1.170):
 - **A fresh `claude` whose cwd is the worktree resolves correctly** — the shim
   recomputes `git rev-parse --show-toplevel`. The only broken path is the in-process
   tool; any fresh shell launch from the worktree dir is fine.
-- **Detection (D15):** `PostToolUse` payloads carry the live `cwd` and the hook runs
-  in it; `toplevel(cwd) != CLAUDE_PROJECT_DIR` (same git common-dir) flags the drift.
+- **Detection (D15, SHIPPED):** `PostToolUse` payloads carry the live `cwd` and the hook
+  runs in it; `toplevel(cwd) != CLAUDE_PROJECT_DIR` (same git common-dir) flags the drift.
   Shim env (e.g. `GITLORE_LAUNCHED`) IS inherited by hooks, so an exported
-  `GITLORE_LAUNCH_ROOT` would also serve as the exact memory-target marker. UNVERIFIED:
-  whether `PostToolUse` fires for `EnterWorktree` itself (capture only ever saw
-  `tool_name:"Bash"`) — decides targeted `matcher:"EnterWorktree|ExitWorktree"` vs `"*"`.
+  `GITLORE_LAUNCH_ROOT` would also serve as the exact memory-target marker.
+- **CONFIRMED 2026-06-10:** `EnterWorktree` AND `ExitWorktree` both fire `PostToolUse`,
+  and a name-based `matcher:"EnterWorktree|ExitWorktree"` matches `tool_name` — so the
+  targeted matcher won over `"*"` (fires once per transition, no per-Bash cost, no
+  de-dup). Payload fields: `EnterWorktree` → `cwd`=worktree, `tool_response.worktreePath`
+  + `worktreeBranch`; `ExitWorktree` → `cwd`=restored launch root, `tool_response`
+  `originalCwd`+`worktreePath`+`action`. (The prior capture only saw `tool_name:"Bash"`
+  because its matcher was `Bash`, not because worktree tools skip the lifecycle.) The
+  Enter-warns/Exit-silent asymmetry falls out of the predicate for free. See [[reference_cc_hook_reload]].
 - **Conversation namespace is per sanitized cwd**, so CC worktrees get their own
   `~/.claude/projects/<encoded>/` (worktrees live under `.claude/worktrees/<name>`).
   `--continue`/`-c` is cwd-project-scoped (won't find a parent-dir session from a
