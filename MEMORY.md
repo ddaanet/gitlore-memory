@@ -50,3 +50,4 @@
 - [CC hook output channels](reference_plugin_hook_user_channel.md) — systemMessage is the user-visible channel (works for SessionStart/PostToolUse); additionalContext is model-only; stderr only on non-zero exit (code 2 or --verbose); basis for D14
 - [CC worktree memory freeze](reference_cc_worktree_memory_freeze.md) — in-process EnterWorktree moves cwd but freezes launch env (PATH/autoMemoryDirectory/CLAUDE_PROJECT_DIR); auto-memory strands on launch repo; cwd≠CLAUDE_PROJECT_DIR is the D15 drift signal; Enter/Exit confirmed to fire PostToolUse (targeted matcher)
 - [CC hook reload mid-session](reference_cc_hook_reload.md) — CC re-reads hook config from settings.local.json mid-session; a newly added hook fires on the next matching tool call, no restart
+- [shellcheck comment directive trap](reference_shellcheck_comment_directive.md) — a comment starting `# shellcheck` parses as a malformed directive and fails lint; shellcheck lints .bats since v0.7.0
