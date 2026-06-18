@@ -52,3 +52,4 @@
 - [CC hook reload mid-session](reference_cc_hook_reload.md) — CC re-reads hook config from settings.local.json mid-session; a newly added hook fires on the next matching tool call, no restart
 - [shellcheck comment directive trap](reference_shellcheck_comment_directive.md) — a comment starting `# shellcheck` parses as a malformed directive and fails lint; shellcheck lints .bats since v0.7.0
 - [release skips uninit memory push](reference_release_uninit_memory_skip.md) — uninitialized memory submodule makes pre-push skip memory; `submodule update --init memory` before any release/parent push
+- [prohibition vs procedure in always-on context](feedback_prohibition_vs_procedure.md) — front-load guardrails against unprompted actions; defer recipes to their trigger
