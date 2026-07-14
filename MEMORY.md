@@ -6,6 +6,7 @@
 - [agent executes, scripts decide](feedback_agent_executes.md) — detection logic in shell scripts, not agent reasoning
 - [skill vs command](feedback_skill_vs_command.md) — self-triggering skill when condition is mechanical/detectable; command only for explicit user-initiated actions
 - [fact-check before incorporating](feedback_fact_check.md) — verify user corrections against training knowledge, don't just defer
+- [examine evidence for drift direction](feedback_examine_evidence_drift.md) — when two co-maintained artifacts diverge, get the drift direction from git history, don't assume a source of truth
 - [loose generation + post-hoc fix](feedback_loose_generation.md) — let generator scaffold freely, constrain at artifact boundary
 - [user: technical depth on LLM mechanism](user_technical_depth.md) — expects rigorous attention/cost/training claims, not hand-waving
 - [CC interleaved thinking](reference_cc_interleaved_thinking.md) — hidden scaffolding channel; model-dependent config
@@ -47,7 +48,7 @@
 - [memory retrieval in practice](feedback_memory_retrieval_in_practice.md) — MEMORY.md one-liners are the effective content; bodies recalled probabilistically, index pointer boosts reliability
 - [CC memory retrieval is agentic](reference_cc_memory_retrieval_agentic.md) — recall = tool-gated Read steered by root MEMORY.md ("Recalled 1 memory"); nested team/MEMORY.md NOT always-loaded; verified --print + interactive
 - [probing CC behavior via tmux PTY](reference_cc_behavior_probing_tmux_pty.md) — drive interactive claude in a bash tmux pane + inspect transcript JSONL; --disallowedTools tool-gating; --settings overrides gitlore hook
-- [gitlore global memory investigation](project_gitlore_global_memory.md) — CONVERGED design for N-tier global/org memory (nested submodules, agent-picks-dir routing, PostToolUse index composition); captured as FR15 + D17 in docs/design.md
+- [gitlore global memory investigation](project_gitlore_global_memory.md) — N-tier global/org memory (nested submodules, agent-picks-dir routing); FR15 + D17, D17 REVISED 2026-07-14: index one-liner canonical, structural recompose (not frontmatter-derived), authoring-time bidi sync, reconcile-after-sync
 - [recall checkpoints](feedback_recall_checkpoints.md) — spontaneous recall is nil; embed explicit checkpoints in calling skills; two points in design tasks: early (input) and late (post-exploration)
 - [submodule config visibility](reference_submodule_config_visibility.md) — hooks firing inside the submodule read its own config, not the parent's; mirror parent-pinned keys (D12 gate)
 - [CC hook output channels](reference_plugin_hook_user_channel.md) — systemMessage is the user-visible channel (works for SessionStart/PostToolUse); additionalContext is model-only; stderr only on non-zero exit (code 2 or --verbose); basis for D14
