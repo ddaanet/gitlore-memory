@@ -44,7 +44,10 @@
 - [preflight stays generic](feedback_preflight_stays_generic.md) — project-specific release gates go in the project's Makefile/CI, not ddaa:preflight
 - [PostToolUse additionalContext in --print mode](feedback_posttooluse_print_mode.md) — hook runs but additionalContext does not inject; affects eval design on feat-evals branch
 - [strict sandbox blocks git writes](feedback_strict_sandbox_git.md) — dangerouslyDisableSandbox disabled in strict mode; git add/commit need user `!` or sandbox toggle
-- [memory retrieval in practice](feedback_memory_retrieval_in_practice.md) — MEMORY.md one-liners are the real content; individual files never read spontaneously, only on explicit prompt
+- [memory retrieval in practice](feedback_memory_retrieval_in_practice.md) — MEMORY.md one-liners are the effective content; bodies recalled probabilistically, index pointer boosts reliability
+- [CC memory retrieval is agentic](reference_cc_memory_retrieval_agentic.md) — recall = tool-gated Read steered by root MEMORY.md ("Recalled 1 memory"); nested team/MEMORY.md NOT always-loaded; verified --print + interactive
+- [probing CC behavior via tmux PTY](reference_cc_behavior_probing_tmux_pty.md) — drive interactive claude in a bash tmux pane + inspect transcript JSONL; --disallowedTools tool-gating; --settings overrides gitlore hook
+- [gitlore global memory investigation](project_gitlore_global_memory.md) — CONVERGED design for N-tier global/org memory (nested submodules, agent-picks-dir routing, PostToolUse index composition); captured as FR15 + D17 in docs/design.md
 - [recall checkpoints](feedback_recall_checkpoints.md) — spontaneous recall is nil; embed explicit checkpoints in calling skills; two points in design tasks: early (input) and late (post-exploration)
 - [submodule config visibility](reference_submodule_config_visibility.md) — hooks firing inside the submodule read its own config, not the parent's; mirror parent-pinned keys (D12 gate)
 - [CC hook output channels](reference_plugin_hook_user_channel.md) — systemMessage is the user-visible channel (works for SessionStart/PostToolUse); additionalContext is model-only; stderr only on non-zero exit (code 2 or --verbose); basis for D14
