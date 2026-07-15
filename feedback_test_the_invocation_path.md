@@ -1,6 +1,6 @@
 ---
 name: feedback-test-the-invocation-path
-description: "a green suite proves nothing about how production invokes the code — tests calling `bash script.sh` bypass the exec bit that hooks.json depends on; assert the real invocation contract"
+description: "green means nothing until you know what ran: a 100644 hook shipped past 16 tests invoking it as `bash script.sh`, and 5 suites (21 tests, incl. the FR11 gate) sat unlisted in `make test`; assert discovery + `[ -x ]`, and distrust counts from pipes/concurrent logs"
 metadata: 
   node_type: memory
   type: feedback
@@ -30,6 +30,23 @@ reason) — the lesson had been learned once and not generalized.
 
 Corollary: `git ls-files -s` (recorded mode), not `ls -l` (local filesystem mode) —
 a marketplace clone reproduces git's mode, and a local `chmod` can mask the bug.
+
+**Same family, one layer up — a suite that is not *run* cannot fail.** 2026-07-15:
+`make test` hand-listed every `.bats` file, and five suites (21 tests) had drifted
+off the list — including the D12/FR11 memory-gate cover. A load-bearing invariant
+sat with zero regression cover and nothing reported it: an unlisted suite is
+indistinguishable from a passing one. Fixed by globbing (`wildcard`/`filter-out`)
+so discovery cannot drift. Generalization: **green means nothing until you know
+what ran** — check the count/plan lines, not just the exit status. Two contracts
+worth asserting, not assuming: the suite is *reached* (discovery) and the code is
+*invoked as production invokes it* (mode/shebang/PATH).
+
+Corollary on measuring: a pipe (`make test | tail`) reports the *last* stage's exit
+status, so a failing suite reads as exit 0; and two concurrent runs redirected to
+the same log interleave into a garbage count (both hit here — a bogus "393 green").
+Redirect to distinct files, echo `$?` before any pipe, count `^ok`/`^not ok`, and
+sanity-check the delta: a number that moves the wrong way is a broken measurement,
+not a surprise.
 
 Related: [[feedback_dogfood_early]] (same failure family — fixtures/tests miss what
 the real target hits), [[feedback_no_handrun_tests]].
