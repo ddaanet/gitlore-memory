@@ -1,6 +1,6 @@
 ---
 name: reference-memory-gate-commit-path
-description: "FR11 handoff is ONE call (memory message + handoff-task.md + session name), parent commit the NEXT turn; write the message with Write — a bash heredoc into the gitdir is classifier-denied. Magic file MOVED 2026-07-16 to `.claude/gitlore-memory-message` (gitignored; resolver via git --show-superproject-working-tree). Commit mechanism SETTLED as a PostToolBatch trigger hook (agent writes message+trigger files, hook commits — sidesteps sandbox AND auto-classifier; no Stop hook; not yet built)"
+description: "FR11 handoff is ONE call (memory message + handoff-task.md + session name), parent commit the NEXT turn; write the message with Write — a bash heredoc into the gitdir is classifier-denied. Magic file MOVED 2026-07-16 to `.claude/gitlore-memory-message` (gitignored; resolver via git --show-superproject-working-tree). Commit mechanism BUILT 2026-07-16: memory-commit-batch.sh on PostToolBatch commits memory from a file trigger (agent writes message+trigger, hook runs git — sidesteps sandbox AND auto-classifier; no Stop hook); once-per-episode nudge in post-tool-use.sh. Registration frozen at session start — dogfood next session"
 metadata: 
   node_type: memory
   type: reference
@@ -70,10 +70,31 @@ Bash call and never touches the gitdir, this **sidesteps the sandbox and the
 auto-classifier entirely** — that is *why* Write-of-ordinary-files + hook beats
 agent-runs-git. The "memory uncommitted → direction" surfacing also lives in that
 batch hook: emit on green + memory-uncommitted, **once per dirty episode**,
-*irrelevant of any parent commit* (not in `pre-commit`). This is `/hook-development`
-work; a new PostToolBatch registration is frozen at session start
-([[reference_cc_hook_reload]]), so build+bats now, dogfood next session. NOT yet
-implemented as of 2026-07-16.
+*irrelevant of any parent commit* (not in `pre-commit`).
+
+**BUILT 2026-07-16.** `scripts/cc-hooks/memory-commit-batch.sh` on PostToolBatch
+(additive to the index-sync entry that shares the event). The agent writes two
+ordinary files — the approved summary (`gitlore-memory-message`) and a trigger
+(`.claude/gitlore-commit-memory`, gitignored, resolved by
+`gitlore_commit_trigger_file`) — and the hook runs `commit-memory.sh -F <msgfile>`,
+committing memory + advancing `live`. **Both IPC files are removed only on a
+COMPLETE commit** (David's correction): a locked repo / in-flight merge is an
+*expected* transient, so on any failure the trigger AND the message survive and
+the next PostToolBatch retries transparently — no agent action, no lost approval;
+"consumed on first attempt" was wrong. Trigger-without-summary is also kept (it
+self-heals the moment the summary lands). The **once-per-episode nudge** landed
+in `post-tool-use.sh` (not the batch hook, because the green-signal there is the
+reliably-typed `.tool_response.exit_code` of the configured pre-commit command —
+design.md line 496 mandates gating the nudge on commit-intent, not on individual
+memory edits): its marker is `gitlore_commit_notified_file` = `git -C mem
+rev-parse --git-path gitlore-nudged`, in the **gitdir** (like the merge-state
+file), NOT a working-tree file — hook-written, so no `.gitignore` entry needed
+(David: don't make the user gitignore one more file). Cleared by
+`gitlore_sync_memory_to_live` on commit. Suites:
+`tests/cc_hook_memory_commit_batch.bats` (6), +2 in `cc_hook_post_tool_use.bats`,
++1 in `lib_util.bats`, +1 registration in `plugin_distribution.bats`; design.md
+FR11 updated. **Registration frozen at session start
+([[reference_cc_hook_reload]]) — NOT live this session; dogfood next session.**
 
 Related: [[feedback_memory_before_root_commit]] (memory commits before the parent
 and pushes alongside it), [[feedback_handoff_files_managed]],
