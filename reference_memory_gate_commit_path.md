@@ -1,6 +1,6 @@
 ---
 name: reference-memory-gate-commit-path
-description: "FR11 handoff is ONE call (memory message + handoff-task.md + session name), parent commit the NEXT turn; write the message with Write — a bash heredoc into the gitdir is classifier-denied; magic file moving to `.claude/gitlore-memory-message`"
+description: "FR11 handoff is ONE call (memory message + handoff-task.md + session name), parent commit the NEXT turn; write the message with Write — a bash heredoc into the gitdir is classifier-denied. Magic file MOVED 2026-07-16 to `.claude/gitlore-memory-message` (gitignored; resolver via git --show-superproject-working-tree). Commit mechanism SETTLED as a PostToolBatch trigger hook (agent writes message+trigger files, hook commits — sidesteps sandbox AND auto-classifier; no Stop hook; not yet built)"
 metadata: 
   node_type: memory
   type: reference
@@ -51,10 +51,29 @@ gitdir. The name is deliberate: it leaves room for nested/N-tier memory repos as
 [[project_gitlore_global_memory]]. Needs a `.gitignore` entry so the ephemeral
 message never dirties the tracked tree.
 
-**Also worth fixing:** surface the gitlore direction on a plain `pre-commit` run, so
-the summary can be written in the *same* turn as the commit command rather than
-costing a blocked-commit round trip. Today the gate only prints the direction after
-refusing, and it names the raw gitdir path rather than the flow.
+**DONE 2026-07-16 — relocate implemented.** `gitlore_commit_msg_file` now returns
+`<parent>/.claude/gitlore-memory-message` via `git -C <mempath> rev-parse
+--show-superproject-working-tree` (with a `dirname` fallback); `commit-memory.sh`
+`mkdir -p`s `.claude/`; `resolve.sh`'s dirty-memory direction interpolates the
+resolved `$msgfile` unchanged; `memory-pre-commit`'s block message points at the new
+path; `.gitignore` + the test fixture mirror it. Full suite 255/0, lint clean. The
+parent `pre-commit` gate stays only as the last-resort backstop
+(commit-without-handoff + no fresh message → error + direction).
+
+**Commit mechanism — SETTLED 2026-07-16 (David), supersedes the earlier "surface the
+direction on a plain pre-commit run" idea.** No Stop hook: the commit must work
+*before* any parent commit, whether or not the agent stops. A dedicated
+**PostToolBatch** hook does it — the agent writes only two ordinary files (the
+message + a `.claude/gitlore-commit-memory` trigger), and the hook runs
+`commit-memory.sh`, committing memory + advancing live. Because the agent makes no
+Bash call and never touches the gitdir, this **sidesteps the sandbox and the
+auto-classifier entirely** — that is *why* Write-of-ordinary-files + hook beats
+agent-runs-git. The "memory uncommitted → direction" surfacing also lives in that
+batch hook: emit on green + memory-uncommitted, **once per dirty episode**,
+*irrelevant of any parent commit* (not in `pre-commit`). This is `/hook-development`
+work; a new PostToolBatch registration is frozen at session start
+([[reference_cc_hook_reload]]), so build+bats now, dogfood next session. NOT yet
+implemented as of 2026-07-16.
 
 Related: [[feedback_memory_before_root_commit]] (memory commits before the parent
 and pushes alongside it), [[feedback_handoff_files_managed]],
