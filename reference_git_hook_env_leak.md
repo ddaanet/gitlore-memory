@@ -1,6 +1,6 @@
 ---
 name: git-hook-env-leak
-description: "git invokes hooks with repo-local GIT_* vars set; `git -C <submodule>` inherits them and either fails on the submodule's gitfile or (in a linked worktree, via GIT_COMMON_DIR) silently retargets the parent's store — clear the FULL local-env-var set at the top of the hook"
+description: "git invokes hooks with repo-local GIT_* vars; submodule-aware hooks must clear the FULL set (`unset $(git rev-parse --local-env-vars)`), not just GIT_DIR/INDEX/WORK_TREE — else GIT_COMMON_DIR retargets the parent store in linked worktrees"
 metadata: 
   node_type: memory
   type: reference
