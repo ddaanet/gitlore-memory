@@ -1,6 +1,6 @@
 ---
 name: reference-plugin-hook-user-channel
-description: "systemMessage is the user-visible channel (works for SessionStart/PostToolUse); additionalContext is model-only; stderr only on non-zero exit (code 2 or --verbose); basis for D14. To report a hook ERROR use systemMessage + exit 0 — stdout JSON parses only on exit 0, so non-zero DISCARDS the message; only exit 2 blocks, and only at PreToolUse (PostToolUse can never block/undo)"
+description: "systemMessage is the user-visible channel (works for SessionStart/PostToolUse); additionalContext is model-only and is honoured at PreToolUse as well as PostToolUse (verified 2026-07-17; arrives even when the tool call fails); stderr only on non-zero exit (code 2 or --verbose); basis for D14. To report a hook ERROR use systemMessage + **exit 0** — stdout JSON parses only on exit 0, so non-zero DISCARDS the message; only exit 2 blocks, and only at PreToolUse (PostToolUse can never block/undo)"
 metadata: 
   node_type: memory
   type: reference
@@ -14,7 +14,12 @@ Claude Code hook output channels, by destination (verified 2026-06-10):
   launcher-guard warning already rides it successfully. This is the field to use
   for anything the human should see.
 - **`hookSpecificOutput.additionalContext`** — injected into the model's context
-  only; **never echoed to the user**. Silent by design.
+  only; **never echoed to the user**. Silent by design. Honoured on
+  **`PreToolUse` as well as `PostToolUse`** (both verified 2026-07-17 via nested
+  `claude --print` + `--settings` scratch hooks): it arrives as a
+  `<system-reminder>` attributed to `<event>:<Tool> hook`, and on `PreToolUse` it
+  is delivered **even when the tool call then fails** — so a hook can annotate a
+  call it has rewritten without depending on the command succeeding.
 - **stdout** — consumed as JSON; not echoed. **Parsed ONLY on `exit 0`.**
 - **stderr** — ignored on `exit 0`; on non-zero exit, shown to the user only with
   exit code **2**, or with `--verbose` for other codes (a "hook error" label
