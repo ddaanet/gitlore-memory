@@ -19,8 +19,11 @@ about the fix does not authorize the edit. Note this is a *broader* rule than
 [[reference-cross-repo-push-auth]] (which is about push auth being
 classifier-denied): the boundary starts at the working tree, not at the push.
 
-**How to apply:** stay read-only outside the session's project. Report the
-diagnosis, the exact change, and the evidence — a patch or quoted snippet in the
-reply, not a Write to that path. If the change really must be made from here, ask
-first. Corollary: once he says "I'll take it from here," stop touching it; leave
-what exists rather than reverting, and say what state it is in.
+**How to apply:** stay read-only on the *code* of the other tree — no edits to
+its sources. Report the diagnosis, the exact change, and the evidence — a patch
+or quoted snippet in the reply. David's stated preference (2026-07-17) is that
+you may **drop a note in that repo** (e.g. a `NOTES`/`TODO` file describing the
+fix) so a session opened in *that* project handles it — the prohibition is on
+making the changes yourself, not on leaving a pointer there. Corollary: once he
+says "I'll take it from here," stop touching its code; leave what exists rather
+than reverting, and say what state it is in.
