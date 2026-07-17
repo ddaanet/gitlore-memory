@@ -72,6 +72,17 @@ agent-runs-git. The "memory uncommitted → direction" surfacing also lives in t
 batch hook: emit on green + memory-uncommitted, **once per dirty episode**,
 *irrelevant of any parent commit* (not in `pre-commit`).
 
+**Scope — the trigger is handoff-only (settled 2026-07-17).** The
+`.claude/gitlore-commit-memory` trigger is the handoff plugin's standalone-commit
+path, NOT a general agent capability. It is deliberately kept out of every
+general agent-facing channel: the SessionStart orientation (`protocol_ctx`), the
+post-tool-use nudge, and the `memory-pre-commit` block message all describe only
+the message-file + parent-commit path, so an agent not running the handoff skill
+is never taught it can force a standalone memory commit. Recorded in design.md's
+`PostToolBatch` section (reworded 2026-07-17 from "the agent writes two files",
+which had framed the escape hatch as a general mechanism). Do not wire the trigger
+into the general nudge.
+
 **BUILT 2026-07-16.** `scripts/cc-hooks/memory-commit-batch.sh` on PostToolBatch
 (additive to the index-sync entry that shares the event). The agent writes two
 ordinary files — the approved summary (`gitlore-memory-message`) and a trigger
