@@ -1,6 +1,6 @@
 ---
 name: cc-agent-discovery
-description: Local plugin agents under cwd/agents/ are NOT auto-discovered by CC — plugin must be marketplace-installed for sub-agent dispatch to work
+description: "cwd `agents/` not auto-loaded; plugin must be marketplace-installed OR `--plugin-dir`-loaded for sub-agent dispatch; address as `<plugin>:<agent>`; defs cached per-session"
 metadata: 
   node_type: memory
   type: reference

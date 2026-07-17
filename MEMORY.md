@@ -10,7 +10,7 @@
 - [loose generation + post-hoc fix](feedback_loose_generation.md) — let generator scaffold freely, constrain at artifact boundary
 - [user: technical depth on LLM mechanism](user_technical_depth.md) — expects rigorous attention/cost/training claims, not hand-waving
 - [CC interleaved thinking](reference_cc_interleaved_thinking.md) — hidden scaffolding channel; model-dependent config
-- [git status sandbox artifacts](feedback_git_status_sandbox.md) — run git status unsandboxed in this repo
+- [git status sandbox artifacts](feedback_git_status_sandbox.md) — sandbox surfaces phantom home dotfiles → sandboxed working-tree reads misreport; git status auto-unsandboxed by the unsandbox-git-status plugin (best-effort); sibling-worktree writes still blocked
 - [plan as late as possible](feedback_plan_late.md) — don't plan beyond next iteration; write Plan N+1 after Plan N ships
 - [CC project-dir encoding](reference_cc_project_dir_encoding.md) — `~/.claude/projects/<name>/` mangling rule; reverse-engineered, edify's impl is incomplete
 - [outside-in TDD when architecture is fixed](feedback_outside_in_tdd.md) — red e2e first, drive units by failure; black-box tests survive refactors
@@ -19,11 +19,11 @@
 - [Plan 02 Dogfood B surprises](feedback_dogfood_b.md) — `.gitmodules` gitignored + gh `--source=.` rejects gitfile submodule
 - [verify handoff "pending" claims](feedback_verify_handoff_pending.md) — check commits + current code before treating handoff-noted feedback as outstanding
 - [self-contained directives](feedback_self_contained_directives.md) — emit absolute paths + explicit cd; never rely on sub-agent's env or CWD
-- [CC agent discovery](reference_cc_agent_discovery.md) — cwd `agents/` not auto-loaded; plugin must be marketplace-installed for sub-agent dispatch
+- [CC agent discovery](reference_cc_agent_discovery.md) — cwd `agents/` not auto-loaded; plugin must be marketplace-installed OR `--plugin-dir`-loaded for sub-agent dispatch; address as `<plugin>:<agent>`; defs cached per-session
 - [large docs review](feedback_large_docs_review.md) — for big plan/spec docs, flag high-risk sections explicitly rather than asking for full eyeball pass
 - [plan length matches work](feedback_plan_length_matches_work.md) — don't write 700 lines of plan for 7 commands of work; reserve full specs for actual design decisions
 - [zellij IPC sandbox](reference_zellij_ipc_sandbox.md) — `zellij run`/`action` need dangerouslyDisableSandbox=true; relevant for /revdiff:revdiff launcher
-- [git hook env leak](reference_git_hook_env_leak.md) — git sets GIT_DIR/GIT_INDEX_FILE/GIT_WORK_TREE; submodule-aware hooks must unset before `git -C <submodule>`
+- [git hook env leak](reference_git_hook_env_leak.md) — git invokes hooks with repo-local GIT_* vars; submodule-aware hooks must clear the FULL set (`unset $(git rev-parse --local-env-vars)`), not just GIT_DIR/INDEX/WORK_TREE — else GIT_COMMON_DIR retargets the parent store in linked worktrees
 - [submodule escape to parent](reference_submodule_escape_to_parent.md) — git -C/cd into an unchecked-out submodule operates on the parent; guard with `[ -e path/.git ]`; linked-worktree = git-dir≠common-dir
 - [CC sub-agent approval](reference_cc_subagent_approval.md) — two-turn return → SendMessage(approval) pattern; sub-agents have no addressable parent in one-shot dispatch
 - [no hand-run tests](feedback_no_handrun_tests.md) — encode behavior in the bats suite; reserve manual runs for dogfooding the real product
@@ -43,7 +43,7 @@
 - [`!` shell shares agent cwd](reference_bang_shell_shared_cwd.md) — user's `!` command runs where the agent's last `cd` left the shell; make `!` commands cwd-independent
 - [session title via custom-title transcript entry](reference_session_title_customtitle.md) — no hook-output field; `/rename` writes a `custom-title` jsonl line; a hook can append one to `transcript_path`
 - [preflight stays generic](feedback_preflight_stays_generic.md) — project-specific release gates go in the project's Makefile/CI, not ddaa:preflight
-- [PostToolUse additionalContext in --print mode](feedback_posttooluse_print_mode.md) — hook runs but additionalContext does not inject; affects eval design on feat-evals branch
+- [PostToolUse additionalContext in --print mode](feedback_posttooluse_print_mode.md) — under --print, PostToolUse hooks fire and wrapped hookSpecificOutput.additionalContext injects (tested 2.1.212); --print --resume does scripted multi-turn; the SDK (tests/evals on main) is an efficiency choice
 - [memory gate commit path](reference_memory_gate_commit_path.md) — FR11 handoff is ONE call (memory message + handoff-task.md + session name); heredoc into the gitdir is classifier-denied. Magic file MOVED 2026-07-16 to `.claude/gitlore-memory-message` (gitignored; resolver via --show-superproject-working-tree). Commit mechanism BUILT 2026-07-16: `memory-commit-batch.sh` on PostToolBatch commits memory from a file trigger (agent writes message+trigger, hook runs git — sidesteps sandbox+classifier; no Stop hook); once-per-episode nudge in post-tool-use.sh. DOGFOODED 2026-07-16: registration confirmed live in a fresh session; clean-branch fires (trigger consumed across the batch boundary, systemMessage emitted); suppressOutput sends the systemMessage to the user UI, not agent context
 - [strict sandbox blocks git writes](feedback_strict_sandbox_git.md) — dangerouslyDisableSandbox disabled in strict mode; git add/commit need user `!` or sandbox toggle
 - [memory retrieval in practice](feedback_memory_retrieval_in_practice.md) — MEMORY.md one-liners are the effective content; bodies recalled probabilistically, index pointer boosts reliability
