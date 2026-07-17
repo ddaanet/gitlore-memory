@@ -60,3 +60,4 @@
 - [prohibition vs procedure in always-on context](feedback_prohibition_vs_procedure.md) — front-load guardrails against unprompted actions; defer recipes to their trigger
 - [test the invocation path, not just the code](feedback_test_the_invocation_path.md) — green means nothing until you know what ran: a 100644 hook shipped past 16 tests invoking it as `bash script.sh`, and 5 suites (21 tests, incl. the FR11 gate) sat unlisted in `make test`; assert discovery + `[ -x ]`, and distrust counts from pipes/concurrent logs
 - [no AskUserQuestion](feedback_no_askuserquestion.md) — David opted out (`#no-askuserquestion`); ask in plain prose, number questions, state a default, decide the rest with sensible defaults
+- [state current truth, no museum framing](feedback_state_current_truth.md) — state current truth positively in memory/docs/comments; don't frame as "not what it was previously" — git history holds the old version
