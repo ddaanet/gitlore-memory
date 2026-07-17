@@ -11,8 +11,7 @@
 - [user: technical depth on LLM mechanism](user_technical_depth.md) — expects rigorous attention/cost/training claims, not hand-waving
 - [CC interleaved thinking](reference_cc_interleaved_thinking.md) — hidden scaffolding channel; model-dependent config
 - [git status sandbox artifacts](feedback_git_status_sandbox.md) — sandbox surfaces phantom home dotfiles → sandboxed working-tree reads misreport; git status auto-unsandboxed by the unsandbox-git-status plugin (best-effort); sibling-worktree writes still blocked
-- [plan as late as possible](feedback_plan_late.md) — don't plan beyond next iteration; write Plan N+1 after Plan N ships
-- [decide as late as possible but not later](feedback_decide_as_late_as_possible.md) — defer a decision until evidence arrives, yet act before inaction decides by default; don't build code presupposing an unsettled answer
+- [decide/plan as late as possible, but not later](feedback_plan_late.md) — defer a decision until evidence arrives, yet act before inaction decides by default; don't build code presupposing an unsettled answer; don't plan beyond the next iteration
 - [CC project-dir encoding](reference_cc_project_dir_encoding.md) — `~/.claude/projects/<name>/` mangling rule; reverse-engineered, edify's impl is incomplete
 - [outside-in TDD when architecture is fixed](feedback_outside_in_tdd.md) — red e2e first, drive units by failure; black-box tests survive refactors
 - [dogfood early](feedback_dogfood_early.md) — run new code on the actual production target the day it ships; fixtures miss real-world bugs

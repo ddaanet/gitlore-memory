@@ -1,13 +1,15 @@
 ---
 name: feedback-plan-late
-description: "Write plans as late as possible; don't plan beyond the next iteration"
+description: "defer a decision until evidence arrives, yet act before inaction decides by default; don't build code presupposing an unsettled answer; don't plan beyond the next iteration"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: a22fb06e-e320-4708-8c2f-18da35422b19
 ---
 
-Two coupled rules for planning work in gitlore (and likely beyond):
+**The general principle: "Take decisions as late as possible, but not later."** The longer you defer a commitment, the more information you have, so the better it will be — but there is a hard deadline, the point where continuing without deciding lets the decision be made *by default* (through momentum, accreted code, or an emergent default nobody chose). Both halves bind: premature decisions bake in a direction before the evidence that would justify it exists and then constrain everything downstream; deferring past the deadline is not neutral either — the system drifts into a de-facto choice no one reasoned about. Applies to design decisions as much as to plans: when a question isn't yet forced, name it as open, state what evidence would settle it (e.g. "needs a log analysis of how X drifts"), and defer — do NOT build code that presupposes the unsettled answer (that decides by default) — but watch the deadline and act before inaction makes the call. Live example — D17's presence-authority question (file set vs. index authoritative over a line's *presence*): left open pending log evidence, and the coverage/prune recompose that presupposed one answer was reverted as premature (see [[gitlore-global-memory-investigation]]).
+
+Two coupled rules that apply this principle to **planning** work in gitlore (and likely beyond):
 
 1. **Write plans as late as possible.** You have the most information right before you execute. Plans written far ahead drift, encode wrong assumptions, and waste effort when reality differs.
 2. **Agile means not planning ahead of the next iteration.** Plan the iteration in front of you; the one after that gets planned after this one ships.
