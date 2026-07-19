@@ -24,6 +24,7 @@
 - [plan length matches work](feedback_plan_length_matches_work.md) — don't write 700 lines of plan for 7 commands of work; reserve full specs for actual design decisions
 - [zellij IPC sandbox](reference_zellij_ipc_sandbox.md) — `zellij run`/`action` need dangerouslyDisableSandbox=true; relevant for /revdiff:revdiff launcher
 - [git hook env leak](reference_git_hook_env_leak.md) — git invokes hooks with repo-local GIT_* vars; submodule-aware hooks must clear the FULL set (`unset $(git rev-parse --local-env-vars)`), not just GIT_DIR/INDEX/WORK_TREE — else GIT_COMMON_DIR retargets the parent store in linked worktrees
+- [nested submodule tier mechanics](reference_nested_submodule_tier.md) — tier gitdir at `.git/modules/gitlore-memory/modules/<tier>`; `fetch origin live:live` is ff-only for free (works only because `live` is never checked out as a branch); a D11 linked memory worktree gets its OWN independent tier clone under `worktrees/<wt>/modules/<tier>`
 - [submodule escape to parent](reference_submodule_escape_to_parent.md) — git -C/cd into an unchecked-out submodule operates on the parent; guard with `[ -e path/.git ]`; linked-worktree = git-dir≠common-dir
 - [CC sub-agent approval](reference_cc_subagent_approval.md) — two-turn return → SendMessage(approval) pattern; sub-agents have no addressable parent in one-shot dispatch
 - [no hand-run tests](feedback_no_handrun_tests.md) — encode behavior in the bats suite; reserve manual runs for dogfooding the real product
