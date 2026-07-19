@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 7affbb95-e26e-4294-8835-9c686a979955
+  modified: 2026-07-19T17:47:41.839Z
 ---
 
 Investigating whether gitlore should support a GLOBAL/organizational memory tier alongside its per-project memory. Motivation: David has ~16 sibling repos each with a gitlore `memory/` submodule; `user` + CC-platform `reference` + portable `feedback` memories are trapped and duplicated per-repo, while `project` memories are correctly per-repo.
@@ -52,4 +53,6 @@ Investigating whether gitlore should support a GLOBAL/organizational memory tier
 - **BRANCH MODEL UNIFIED to detached-at-`live` — memory AND tiers, one commit path.** The per-parent-branch name was only a local checkout handle (never travelled, gave no branch-aligned history since memory ff-pushes `HEAD:live` every commit), so dropping it costs nothing semantic and collapses the `branch-vs-live`/`local-vs-remote` split into "my pending commit vs authoritative `live`, re-detach at new live." Refactor of `session-start.sh`/`sync_memory_to_live`/`resolve.sh` — no compat tax (sole user). Memory kept named branches ONLY out of "don't refactor working code," which sole-user neutralizes.
 - **SLICE SEQUENCE:** **3-i-a** (materialize + `SessionStart` detach-at-`live` ff propagation-in + self-describing routing — no commit path; plan `docs/plans/2026-07-18-11-tiered-memory-3i-propagation.md`, TDD bats, spike-first for nested-submodule mechanics) → **branch-model unification** (Plan-03-level refactor) → **tier commit/push lockstep** (rides unified path) → **3-ii** composition internals → **3-iii** `/gitlore:add-tier` (mount + `--create`). Coverage/prune/dedup STILL deferred behind the unsettled presence-authority question.
 
-**NEXT:** execute 3-i-a from its plan (Task 1 spike gates the rest). Open for later slices: one approval summary per memory episode vs per tier; whether the memory submodule needs its own recursing pre-commit/pre-push. `ddaanet` remote visibility defaults private (matches memory).
+**3-i-a CODE DONE 2026-07-19 (Tasks 1-3, TDD, `make test` 291/0).** `gitlore_tier_paths` + `gitlore_active_tiers` in `scripts/lib/util.sh`; a guarded `SessionStart` block that materializes each tier, ff's it with `fetch origin live:live`, detaches at `live`, then appends active-tier routing guidance (each tier's own frontmatter `description:`) to the standing `additionalContext`. Fixtures `tests/helpers/tier-fixtures.bash`, 13 cases in `tests/tier_discovery.bats`. Nested-submodule git mechanics recorded in [[nested-submodule-tier-mechanics]]. **Task 4 (dogfood: stand up the real `ddaanet` remote and mount it) NOT done** — it needs David's `!` shell for the submodule git writes and a call on remote visibility (default private, matching memory).
+
+**NEXT:** Task 4 dogfood, then the branch-model unification refactor. Open for later slices: one approval summary per memory episode vs per tier; whether the memory submodule needs its own recursing pre-commit/pre-push.
