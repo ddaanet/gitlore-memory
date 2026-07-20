@@ -1,11 +1,11 @@
 ---
 name: nested-submodule-tier-mechanics
-description: "git mechanics of a submodule nested inside a submodule (gitlore memory tiers), characterized 2026-07-19: nested gitdir path, ff-only `fetch live:live`, and the D11 linked worktree getting its OWN independent tier clone"
+description: "tier gitdir at `.git/modules/gitlore-memory/modules/<tier>`; `fetch origin live:live` is ff-only for free (works only because `live` is never checked out as a branch); a D11 linked memory worktree gets its OWN independent tier clone under `worktrees/<wt>/modules/<tier>`; seed a tier remote with default branch `main` and `live` alongside — a `live` default gets checked out by the mount and the ff-only fetch then refuses; mounting needs no commit inside memory"
 metadata: 
   node_type: memory
   type: reference
   originSessionId: d5a70bd9-0134-401c-b513-66b2bfbfbd23
-  modified: 2026-07-19T17:47:32.091Z
+  modified: 2026-07-20T17:47:07.889Z
 ---
 
 Characterized by spike + pinned in `tests/tier_discovery.bats` (D17 slice 3-i-a).
@@ -22,7 +22,14 @@ Characterized by spike + pinned in `tests/tier_discovery.bats` (D17 slice 3-i-a)
   checked-out branch. That is the propagation-in primitive; callers must
   tolerate the non-zero exit.
 - **A fresh mount lands on the remote's default branch** (`main`), and no local
-  `live` ref exists until the fetch above creates it.
+  `live` ref exists until the fetch above creates it. Consequence for seeding a
+  tier remote: keep the default branch `main` and push `live` *alongside* it.
+  A `live` default gets checked out as a branch by the mount, and the ff-only
+  fetch above then refuses to update it — propagation-in dies at the first hop.
+- **Mounting a tier requires no commit inside the memory store.**
+  `gitlore_tier_paths` reads `memory/.gitmodules` from the *working tree*, so a
+  `submodule add` left staged is already discoverable; the FR11 gate stays the
+  sole committer.
 - **A D11 linked memory worktree gets an INDEPENDENT tier clone** at
   `.git/modules/gitlore-memory/worktrees/<wt>/modules/<tier>` — separate object
   store and separate refs from the primary checkout's tier. `submodule update
