@@ -1,11 +1,11 @@
 ---
 name: feedback_evals_happy_path
-description: "evals are the net bats can't be: cover the ordinary flow not the edges, run on release + on every prompt change; `just precommit` stays fast/frequent, new `just prerelease` (= precommit + evals) is slow/rare and `release` depends on it; content-addressed sentinels on both gates prevent redundant re-runs (unbuilt); write the evals once nested memory (D17 slice 3) is done"
+description: "evals are the net bats can't be: cover the ordinary flow not the edges, run on release + on every prompt change; `just precommit` stays fast/frequent, `just prerelease` (= precommit + evals) is slow/rare; content-addressed sentinels BUILT 2026-07-21 (`scripts/run-gate.sh`, whole-tree content hash via throwaway index, untracked counts, failed hash records nothing); `release` still depends on `precommit` alone so release via `just prerelease release`; write the evals once nested memory (D17 slice 3) is done"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: 7f6454fc-a230-4fec-989c-c057366f5934
-  modified: 2026-07-21T08:53:43.739Z
+  modified: 2026-07-21T10:56:39.628Z
 ---
 
 Use the eval harness (`tests/evals/`) for end-to-end testing that exercises the
@@ -33,9 +33,9 @@ distinguishable from a regression.
 
 **Two gates, split by cost (decided 2026-07-21).** `just precommit` is the
 **fast, frequent** per-change gate (`check-version`, `lint`, `test`) and evals
-must NOT go in it. A new `just prerelease` is the **slow, rare** gate — it runs
-`precommit` plus `make evals` — and **`release` depends on `prerelease`**, so
-the expensive run sits on the last irreversible step. `ddaa:preflight` probes
+must NOT go in it. `just prerelease` is the **slow, rare** gate — it runs
+`precommit` plus `just evals` — so the expensive run sits next to the last
+irreversible step (wiring in the last paragraph). `ddaa:preflight` probes
 `just precommit` first and therefore stays fast; it is a readiness check, not
 the eval gate. Naming: `nightly` is the widely recognized term but names a
 *clock* trigger this has none of; `acceptance` names the test *kind*, not the
@@ -44,12 +44,32 @@ this repo already uses. Either way the wiring lives in the project's
 justfile/Makefile, never in the shared skill
 ([[feedback_preflight_stays_generic]]).
 
-**Redundant re-runs are prevented by content-addressed sentinels** on both
-`precommit` and `prerelease`: derive a hash from the content the gate actually
-covers, record it when the gate passes, and skip the run when the current hash
-matches a recorded one. So a `release` right after a green `precommit` re-runs
-only what `precommit` did not already cover, and repeated invocations on an
-unchanged tree cost nothing. NOT YET BUILT — design the hash inputs when it is.
+**Redundant re-runs are prevented by content-addressed sentinels — BUILT
+2026-07-21** as `scripts/run-gate.sh NAME CMD...`, one sentinel per gate under
+`$(git rev-parse --git-path gitlore/gates)/NAME`, recorded only on success.
+`precommit` and `evals` each own one; `prerelease` depends on both, so it
+re-runs only the evals after a green `precommit`. The resolved hash inputs:
+
+- **Whole tree, not a per-gate input set.** A narrower set skips more often but
+  a forgotten input yields a *stale green*, the one failure a gate must not
+  have. Over-running is the acceptable direction.
+- **Content-addressed, not HEAD-addressed** — throwaway index: `cp` the real
+  index, `git add -A`, `git write-tree`. A release commits *after* precommit
+  goes green, and that commit must not invalidate the sentinel.
+- **Untracked non-ignored files count** (hence `add -A`, not `add -u`):
+  `make test` globs `tests/*.bats`, so an unstaged new suite changes what runs.
+- **A failed hash records nothing and runs the gate.** Not hypothetical — under
+  a sandbox surfacing phantom home dotfiles `git add -A` dies outright, and the
+  first draft recorded the half-updated index's hash, which would have skipped
+  the *next* run ([[feedback_git_status_sandbox]]).
+- Escape hatch: `GITLORE_GATE_FORCE=1`.
+
+**`release` still depends on `precommit` alone**, because that dependency lives
+in the vendored `plugin-dev/release.just` and editing it here would drift from
+upstream ([[feedback_preflight_stays_generic]], [[feedback_no_in_place_other_repos]]).
+Release via **`just prerelease release`**: the evals run once and release's own
+`precommit` is a sentinel skip. Making `release` depend on a `prerelease` the
+plugin defines is a generic change that belongs upstream in the toolkit.
 
 **Scheduled:** write these evals once nested memory is complete (D17 slice 3 —
 after 3-ii composition and 3-iii `/add-tier`), so the scenarios cover the
