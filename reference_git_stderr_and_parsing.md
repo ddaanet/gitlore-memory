@@ -1,11 +1,11 @@
 ---
 name: reference_git_stderr_and_parsing
-description: "which git queries are silent on normal-absence, how to tell a divergence push-reject from a policy one, -z enumeration, and the relative --git-common-dir CDPATH trap"
+description: "which git queries are silent on normal-absence (delete the redirect) vs noisy; `(fetch first)`/`(non-fast-forward)` = divergence vs `(pre-receive hook declined)` = policy; `-z --get-regexp` for whitespace-safe enumeration; `--git-common-dir` is relative in a main worktree → CDPATH trap; `-q` is ASYMMETRIC — `push -q` still names its rejection reason but `fetch -q` prints NOTHING on a non-fast-forward, so never classify a fetch rejection under `-q`; discriminator pinned by tests/push_rejection_discriminator.bats"
 metadata: 
   node_type: memory
   type: reference
   originSessionId: 5f90d295-aa18-451c-8ed2-514d78c5207b
-  modified: 2026-07-20T13:40:37.204Z
+  modified: 2026-07-21T07:17:25.760Z
 ---
 
 Verified empirically 2026-07-20 (git 2.x, Linux) while sweeping `2>/dev/null`
@@ -29,7 +29,20 @@ classes; the leading marker differs too (`! [rejected]` vs `! [remote rejected]`
 - policy → `! [remote rejected] HEAD -> live (pre-receive hook declined)`.
 "Updates were rejected" appears only on `hint:` lines and its wording varies, so
 it is not a reliable key. Caveat: the parenthesized text is git's UI, not a
-documented contract — wording may drift across versions or transports.
+documented contract — wording may drift across versions or transports. Pinned
+2026-07-21 by `tests/push_rejection_discriminator.bats`, which provokes each
+class against a real git (stale-ref push, known-diverged push, local `push .`,
+ff-only fetch, `pre-receive` decline) so drift fails there rather than in the
+field.
+
+**`-q` is asymmetric between push and fetch.** `git push -q` still reports its
+rejection reason; **`git fetch -q` prints nothing at all on a non-fast-forward**
+and only exits 1. So any site that *classifies* a fetch rejection must run
+without `-q` — capture stdout+stderr instead. This shipped as a live bug in
+gitlore's tier fetch: the divergence arm was unreachable and a diverged tier was
+reported as merely "stale". It survived a suite that already covered ff-only
+rejection, because that test ran its own `git fetch` **without** `-q` — the
+invocation was the bug, not the logic ([[feedback_test_the_invocation_path]]).
 
 **Whitespace-safe enumeration:** `git config -z --get-regexp <re>` emits one
 NUL-terminated `key\nvalue` record per match, so `${rec#*$'\n'}` recovers a value

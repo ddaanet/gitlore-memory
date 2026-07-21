@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: d5a70bd9-0134-401c-b513-66b2bfbfbd23
-  modified: 2026-07-20T17:47:07.889Z
+  modified: 2026-07-21T07:18:09.325Z
 ---
 
 Characterized by spike + pinned in `tests/tier_discovery.bats` (D17 slice 3-i-a).
@@ -34,8 +34,15 @@ Characterized by spike + pinned in `tests/tier_discovery.bats` (D17 slice 3-i-a)
   `.git/modules/gitlore-memory/worktrees/<wt>/modules/<tier>` — separate object
   store and separate refs from the primary checkout's tier. `submodule update
   --init` from the linked worktree succeeds; it just re-clones. Each worktree
-  therefore fast-forwards from the remote on its own (fine for propagation-in;
-  two worktrees can diverge once tier writes land — input to the lockstep slice).
+  therefore fast-forwards from the remote on its own. Two worktrees can diverge
+  once tier writes land, but that is **not** a new design problem (settled
+  2026-07-21): memory worktrees *share* one `refs/heads/live`, so their
+  divergence is caught locally and offline by `push . HEAD:live` (`head-vs-live`);
+  a tier's refs are not shared, so the same divergence simply surfaces one step
+  later, at `push origin HEAD:live` (`head-vs-remote`). Both flavors exist after
+  the branch-model unification and funnel into the same `gitlore_prepare_merge`,
+  so a per-worktree tier clone behaves exactly like the already-solved
+  two-machines-one-remote case. It wants a lockstep test, not a decision.
 - **Checking a stale memory branch out drops `memory/.gitmodules`**, so the tier
   looks unmounted and leaves an untracked `<tier>/` dir behind (`warning: unable
   to rmdir`). Mounting a tier must advance the memory trunk, not one branch.
