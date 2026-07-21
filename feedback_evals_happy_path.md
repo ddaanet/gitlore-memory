@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 7f6454fc-a230-4fec-989c-c057366f5934
-  modified: 2026-07-21T10:56:39.628Z
+  modified: 2026-07-21T11:15:31.118Z
 ---
 
 Use the eval harness (`tests/evals/`) for end-to-end testing that exercises the
@@ -62,7 +62,11 @@ re-runs only the evals after a green `precommit`. The resolved hash inputs:
   a sandbox surfacing phantom home dotfiles `git add -A` dies outright, and the
   first draft recorded the half-updated index's hash, which would have skipped
   the *next* run ([[feedback_git_status_sandbox]]).
-- Escape hatch: `GITLORE_GATE_FORCE=1`.
+- Escape hatch: `GITLORE_GATE_FORCE=1` — which `tests/gate_sentinel.bats` must
+  `unset` in `setup`, because the suite runs *inside* a gate (`just precommit`
+  → `make test`) and the ambient value otherwise reaches every gate under test
+  and makes all the skip cases silently unprovable. A suite that runs inside
+  the thing it tests has to neutralize the ambient environment first.
 
 **`release` still depends on `precommit` alone**, because that dependency lives
 in the vendored `plugin-dev/release.just` and editing it here would drift from
