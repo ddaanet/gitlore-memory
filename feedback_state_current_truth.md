@@ -1,6 +1,6 @@
 ---
 name: feedback-state-current-truth
-description: state current truth positively in memory/docs/comments; don't frame as "not what it was previously" — git history holds the old version
+description: "present-tense standing truth in memory/docs/comments, no \"used to be\" framing; commit messages exempt"
 metadata:
   node_type: memory
   type: feedback

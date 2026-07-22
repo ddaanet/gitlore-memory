@@ -1,6 +1,6 @@
 ---
 name: plan-length-matches-work
-description: "Plan doc length should match the executable work — don't write 700 lines for 7 commands"
+description: "plan doc length tracks the executable work, not the topic"
 metadata: 
   node_type: memory
   type: feedback

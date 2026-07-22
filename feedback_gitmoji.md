@@ -1,6 +1,6 @@
 ---
 name: gitmoji-commit-convention
-description: This repo uses a gitmoji commit-msg hook that prepends an emoji from the conventional prefix
+description: "conventional prefix → emoji, via a plugin-managed commit-msg hook"
 metadata: 
   node_type: memory
   type: feedback

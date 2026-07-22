@@ -1,6 +1,6 @@
 ---
 name: feedback_whitespace_safety
-description: "whitespace safety is essential, never a low-priority nit; test the parse against a spaced input before assigning severity"
+description: "a whitespace-unsafe parse is never a nit; test against a spaced input before ranking severity; default to NUL-delimited forms"
 metadata: 
   node_type: memory
   type: feedback

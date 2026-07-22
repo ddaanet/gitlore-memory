@@ -1,6 +1,6 @@
 ---
 name: feedback_no_handrun_tests
-description: "never hand-run verification scripts; encode behavior in the bats suite, dogfood the real product"
+description: "encode behavior in the bats suite; manual runs are for dogfooding the real product"
 metadata: 
   node_type: memory
   type: feedback

@@ -1,6 +1,6 @@
 ---
 name: feedback_memory_before_root_commit
-description: "keep memory/ submodule in lockstep with the parent: commit it before the root commit, and always push it alongside the parent push"
+description: "commit memory/ before the root commit, push it alongside; lockstep is checked on `live`, not `main`"
 metadata: 
   node_type: memory
   type: feedback

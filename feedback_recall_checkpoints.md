@@ -1,6 +1,6 @@
 ---
 name: feedback_recall_checkpoints
-description: deliberate recall needs embedded checkpoints in calling skills; two natural points in design tasks — early and late
+description: "spontaneous recall is nil; place explicit checkpoints early (input) and late (post-exploration)"
 metadata: 
   node_type: memory
   type: feedback

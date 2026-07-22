@@ -1,6 +1,6 @@
 ---
 name: git-hook-env-leak
-description: "git invokes hooks with repo-local GIT_* vars; submodule-aware hooks must clear the FULL set (`unset $(git rev-parse --local-env-vars)`), not just GIT_DIR/INDEX/WORK_TREE — else GIT_COMMON_DIR retargets the parent store in linked worktrees; EXCEPT GIT_INDEX_FILE, which a staging hook must capture before the unset and restore for its `git add` — git hands the hook `.git/index` (plain), `.git/index.lock` (`-a`), or `.git/next-index-*.lock` (pathspec), and a bare `git add` under the lock flavors fails \"index.lock: File exists\" and blocks the commit"
+description: "hooks inherit repo-local `GIT_*`; clear the full set via `unset $(git rev-parse --local-env-vars)`, except `GIT_INDEX_FILE`, which a staging hook must restore for its `git add`"
 metadata: 
   node_type: memory
   type: reference

@@ -1,6 +1,6 @@
 ---
 name: feedback-test-the-invocation-path
-description: "green means nothing until you know what ran: a 100644 hook shipped past 16 tests invoking it as `bash script.sh`, and 5 suites (21 tests, incl. the FR11 gate) sat unlisted in `make test`; assert discovery + `[ -x ]`, and distrust counts from pipes/concurrent logs"
+description: "assert discovery, `[ -x ]`, and that the suite is listed in `make test`; the 100644 hook and 5 unlisted suites"
 metadata: 
   node_type: memory
   type: feedback
