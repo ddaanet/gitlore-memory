@@ -1,6 +1,6 @@
 ---
 name: feedback_prohibition_vs_procedure
-description: "split always-on disclosures by timing — front-load prohibitions, defer procedures to their trigger"
+description: "front-load prohibitions, defer procedures to their trigger; a resident recipe turns into ceremony"
 metadata: 
   node_type: memory
   type: feedback

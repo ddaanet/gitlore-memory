@@ -1,6 +1,6 @@
 ---
 name: feedback_evals_happy_path
-description: "evals are the net bats can't be: cover the ordinary flow not the edges, run on release + on every prompt change; `just precommit` stays fast/frequent, `just prerelease` (= precommit + evals) is slow/rare; content-addressed sentinels BUILT 2026-07-21 (`scripts/run-gate.sh`, whole-tree content hash via throwaway index, untracked counts, failed hash records nothing); `release` still depends on `precommit` alone so release via `just prerelease release`; write the evals once nested memory (D17 slice 3) is done"
+description: "evals cover the ordinary flow bats can't; `just precommit` fast, `just prerelease` slow; sentinels in `scripts/run-gate.sh`; write them once D17 slice 3 lands"
 metadata: 
   node_type: memory
   type: feedback

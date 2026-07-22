@@ -1,6 +1,6 @@
 ---
 name: reference_tmpdir_unset_unsandboxed
-description: "$TMPDIR is unset under dangerouslyDisableSandbox → redirect to absolute scratchpad path, not $TMPDIR"
+description: "use the absolute scratchpad path; `just release` runs unsandboxed and its cross-repo marketplace push passes the classifier as part of the top-level command"
 metadata: 
   node_type: memory
   type: reference

@@ -1,6 +1,6 @@
 ---
 name: feedback_no_askuserquestion
-description: David does not want the AskUserQuestion tool; ask in plain prose instead
+description: "David opted out of the tool; ask in numbered plain prose with a stated default"
 metadata: 
   node_type: memory
   type: feedback

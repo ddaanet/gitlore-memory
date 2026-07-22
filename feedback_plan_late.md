@@ -1,6 +1,6 @@
 ---
 name: feedback-plan-late
-description: "defer a decision until evidence arrives, yet act before inaction decides by default; don't build code presupposing an unsettled answer; don't plan beyond the next iteration"
+description: "defer until evidence arrives, act before inaction decides by default"
 metadata: 
   node_type: memory
   type: feedback

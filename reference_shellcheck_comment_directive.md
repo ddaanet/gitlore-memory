@@ -1,6 +1,6 @@
 ---
 name: reference_shellcheck_comment_directive
-description: "a code comment starting with \"# shellcheck\" is parsed as a (malformed) directive and fails lint"
+description: "a comment starting `# shellcheck` parses as a malformed directive and fails lint; .bats is linted too"
 metadata: 
   node_type: memory
   type: reference

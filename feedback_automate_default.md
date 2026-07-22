@@ -1,6 +1,6 @@
 ---
 name: feedback-automate-default
-description: Default to automated tests; manual tests only when automation costs disproportionately more than the value it adds
+description: "automated tests by default; when a manual check is justified"
 metadata: 
   node_type: memory
   type: feedback

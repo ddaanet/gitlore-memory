@@ -1,6 +1,6 @@
 ---
 name: feedback-no-in-place-other-repos
-description: "don't edit another repo in place — investigate and propose; David applies changes to his other projects himself"
+description: "other repos stay read-only: investigate and propose a patch; the consent boundary is the working tree"
 metadata: 
   node_type: memory
   type: feedback

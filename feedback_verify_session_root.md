@@ -1,6 +1,6 @@
 ---
 name: feedback-verify-session-root
-description: "After resuming from a compaction summary, verify which repo the session is rooted in before acting — the summary describes work, not location, and a wrong root means editing another session's repo"
+description: "after a compaction, check PWD / CLAUDE_PROJECT_DIR / gitStatus before acting; the 2026-07-20 wrong-root incident"
 metadata: 
   node_type: memory
   type: feedback
