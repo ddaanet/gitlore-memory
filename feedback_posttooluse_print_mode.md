@@ -1,13 +1,22 @@
 ---
 name: feedback_posttooluse_print_mode
-description: "under --print, PostToolUse hooks fire and wrapped hookSpecificOutput.additionalContext injects (tested 2.1.212); --print --resume does scripted multi-turn; SDK `query()` is stateless (spawns per call, `resume` replays) so BOTH harnesses re-prime every turn — measured 2026-07-17, SDK $0.379/14.4s vs --print --resume $0.425/24.3s per two-turn trial; pick on dependency footprint, not context reuse"
+description: "under --print, PostToolUse hooks fire and wrapped hookSpecificOutput.additionalContext injects (tested 2.1.212); SessionStart/PreToolUse/PostToolBatch fire under --print too (2026-07-22), so a --print harness can drive the whole hook set; --print --resume does scripted multi-turn; SDK `query()` is stateless (spawns per call, `resume` replays) so BOTH harnesses re-prime every turn — measured 2026-07-17, SDK $0.379/14.4s vs --print --resume $0.425/24.3s per two-turn trial; pick on dependency footprint, not context reuse"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: c1fe8547-2e6f-4cb6-b1a3-c378f4e05ed4
+  modified: 2026-07-22T14:43:28.578Z
 ---
 
 **Under `claude --print`, PostToolUse hooks fire and a properly-wrapped `additionalContext` injects.** Verified by direct test on CC 2.1.212: a PostToolUse hook ran under `--print` and its `additionalContext` steered the model's reply. A widespread belief holds the opposite (GitHub [anthropics/claude-code#37559](https://github.com/anthropics/claude-code/issues/37559) reads that way) — test before trusting it.
+
+**`SessionStart`, `PreToolUse` and `PostToolBatch` fire under `--print` too** (probed
+2026-07-22, one throwaway repo + `--setting-sources project`, a hook appending its
+event name to a log). So a `--print` harness can exercise the *whole* hook set, not
+just the one event that happened to be verified first. That mattered here: gitlore's
+eval fixture hand-listed `PostToolUse` alone, which left composition, the commit
+gate, recall and add-tier dark in every eval ever run — derive the eval's hook
+wiring from the plugin's real `hooks.json` instead ([[feedback_test_the_invocation_path]]).
 
 **`additionalContext` requires `hookSpecificOutput` wrapping.** A hook printing top-level `{"additionalContext": "..."}` is silently dropped; the correct shape is:
 ```json

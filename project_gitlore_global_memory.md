@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 7affbb95-e26e-4294-8835-9c686a979955
-  modified: 2026-07-22T12:36:14.961Z
+  modified: 2026-07-22T14:45:08.061Z
 ---
 
 Investigating whether gitlore should support a GLOBAL/organizational memory tier alongside its per-project memory. Motivation: David has ~16 sibling repos each with a gitlore `memory/` submodule; `user` + CC-platform `reference` + portable `feedback` memories are trapped and duplicated per-repo, while `project` memories are correctly per-repo.
@@ -71,4 +71,14 @@ Investigating whether gitlore should support a GLOBAL/organizational memory tier
 
 **3-iii `/gitlore:add-tier` DONE 2026-07-22** (`scripts/add-tier.sh`, `scripts/cc-hooks/add-tier-batch.sh` on PostToolBatch, `commands/add-tier.md`; 35 cases). The agent writes a one-shot `key=value` intent file `.claude/gitlore-add-tier` (`mode=mount|create`, `name`, `url`, `description`) and the hook runs the git. The trigger-file route was already the FR11 pattern, but a **second independent reason** forced it here: mounting a tier *clones*, and the agent's command sandbox has no network — satisfying the classifier alone would not have been enough. `mode=create` seeds the tier `MEMORY.md` (frontmatter `description:` = routing guidance), pushes `main` **then** `live` so the remote default settles on `main`, then takes the identical mount path. Both modes end MOUNTED-but-INACTIVE and make no commit inside memory; activation stays the deliberate manifest edit, which retriggers 3-ii composition. A tier name with whitespace is refused up front — it would mount fine but the line-oriented manifest could never list it.
 
-**NEXT:** happy-path evals for the finished tier flow ([[feedback_evals_happy_path]]) — which should now also cover the recall round trip and the add-tier intent→hook→manifest round trip.
+**HAPPY-PATH EVALS DONE 2026-07-22** ([[feedback_evals_happy_path]]) — three new scenarios, all passing live at `EVAL_K=1`: `03-add-tier` (intent file → hook mounts → manifest edit recomposes the root index), `04-tier-write` (a portable fact routed into the tier, mirrored down, memory *and* tier committed from one approved summary), `05-recall` (request file → injected body → the answer uses it). The harness had to generalize first: scenarios now name an assertion script in `tests/evals/asserts/` and an optional fixture in `tests/evals/setups/`, `approval_message` is optional (a flow with no approval gate is one turn), and `{{EVAL_REPO}}` expands at trial time so a scenario can name a URL its fixture just created.
+
+Three things that run deeper than the scenarios:
+
+- **The eval repo's hooks are now derived from the plugin's real `hooks/hooks.json`**, not hand-listed. The old hand-written subset was `PostToolUse` alone — so composition, the commit gate, recall and add-tier were dark in *every eval ever run*. Exactly the failure [[feedback_test_the_invocation_path]] names. Probed first: `SessionStart`, `PreToolUse`, `PostToolUse` and `PostToolBatch` all fire under `claude --print` ([[feedback_posttooluse_print_mode]]).
+- **The recall assertion reads the session transcript**, because every repo-visible signal is identical whether the body arrived by injection or by the agent simply Reading the file — same ledger record, same answer. Only the tool calls tell them apart, and that distinction is the whole mechanism. Located by session id, not by deriving the projects-dir mangling ([[reference_cc_project_dir_encoding]]).
+- **The assertions are themselves tested** (`tests/evals/lib/asserts.bats`, plus `dispatch.bats` for the scenario loop): an assertion that always passes turns its scenario into an expensive no-op and the run still looks green.
+
+This run also **dogfooded `add-tier-batch.sh` for the first time** — its `PostToolBatch` registration was frozen at session start in the session that built it, so it had never fired ([[reference_cc_hook_reload]]). It mounted a tier against a local bare remote; a real network remote is still unexercised. Fixtures reach no network at all, which is why `protocol.file.allow` has to be loosened through the environment ([[reference_git_protocol_file_allow]]).
+
+**NEXT:** no slice is in flight. The open questions are unchanged — presence-authority (still gating coverage/prune/dedup, and the recall ledger now produces the usage evidence it was waiting on), tier divergence detected but not resolvable (the resolve continuation derives its store from `gitlore_memory_path`), `/gitlore:resolve` not composing, and index→frontmatter sync having no keyword-density validation.
