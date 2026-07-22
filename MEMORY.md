@@ -2,6 +2,7 @@
 
 - [sandboxed git leaves index.lock](ddaanet/reference_sandbox_git_lockfile.md) — a sandboxed `git add` can strand `.git/index.lock` → the NEXT commit's pre-commit hook dies on "File exists"/"Another git process"; retry unsandboxed before suspecting the hook
 - [bats bare `!` never fails](ddaanet/reference_bats_bang_no_fail.md) — a top-level `! cmd` in a @test asserts nothing (shellcheck SC2314); use `run ! cmd`
+- [git refuses ext:: by default](ddaanet/reference_git_ext_transport.md) — `protocol.ext.allow=never` is the default, so a submodule clone of `ext::sh -c …` dies with "transport 'ext' not allowed"; an ext:: injection finding needs a loosened config — probe the policy, and separate shell injection from transport selection
 - [gitlore project overview](project_overview.md) — current state, next steps, design doc location
 - [gitmoji commit convention](feedback_gitmoji.md) — conventional prefix → emoji, via a plugin-managed commit-msg hook
 - [living design doc structure](feedback_design_doc_structure.md) — six-section pattern for docs/design.md
