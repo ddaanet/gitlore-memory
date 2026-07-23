@@ -1,6 +1,6 @@
 ---
 name: reference_plugin_cache_staleness
-description: marketplace plugin cache is a static file extraction that can lag the repo at the same version string — verify loaded source before trusting any plugin-code verification
+description: "`~/.claude/plugins/cache/<owner>/<plugin>/<version>/` is a flat extraction keyed by version, so `/plugin update` no-ops when the version string is unchanged; verify loaded source before trusting any plugin-code verification"
 metadata: 
   node_type: memory
   type: reference

@@ -1,6 +1,6 @@
 ---
 name: Claude Code interleaved thinking
-description: CC supports interleaved thinking blocks hidden from the TUI; model support varies
+description: "thinking blocks are the hidden scaffolding channel (TUI renders text/tool_use only); older models need `alwaysThinkingEnabled: true` in settings.json"
 type: reference
 originSessionId: cf8270f1-627f-41f0-96b6-295fcfe5ef90
 ---
