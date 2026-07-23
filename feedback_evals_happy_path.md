@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 7f6454fc-a230-4fec-989c-c057366f5934
-  modified: 2026-07-21T11:15:31.118Z
+  modified: 2026-07-23T10:38:50.796Z
 ---
 
 Use the eval harness (`tests/evals/`) for end-to-end testing that exercises the
@@ -68,12 +68,15 @@ re-runs only the evals after a green `precommit`. The resolved hash inputs:
   and makes all the skip cases silently unprovable. A suite that runs inside
   the thing it tests has to neutralize the ambient environment first.
 
-**`release` still depends on `precommit` alone**, because that dependency lives
-in the vendored `plugin-dev/release.just` and editing it here would drift from
-upstream ([[feedback_preflight_stays_generic]], [[feedback_no_in_place_other_repos]]).
-Release via **`just prerelease release`**: the evals run once and release's own
-`precommit` is a sentinel skip. Making `release` depend on a `prerelease` the
-plugin defines is a generic change that belongs upstream in the toolkit.
+**`release` depends on `prerelease`**, so one `just release` runs both gates.
+That dependency lives in the vendored `plugin-dev/release.just`, so it was fixed
+upstream in `ddaanet/claude-plugin-dev` (v0.4.0, vendored here 2026-07-23) rather
+than patched in the vendored copy — the generic recipe is the toolkit's, and
+editing it here would drift from upstream
+([[feedback_preflight_stays_generic]], [[feedback_no_in_place_other_repos]]).
+The toolkit makes `prerelease` **mandatory**: just rejects a justfile whose
+dependency names a missing recipe, so a consumer that hasn't defined it fails
+immediately rather than at release time.
 
 **Scheduled:** write these evals once nested memory is complete (D17 slice 3 —
 after 3-ii composition and 3-iii `/add-tier`), so the scenarios cover the
