@@ -77,4 +77,5 @@
 - [recall checkpoints](feedback_recall_checkpoints.md) — spontaneous recall is nil; place explicit checkpoints early (input) and late (post-exploration)
 - [submodule config visibility](reference_submodule_config_visibility.md) — hooks firing inside the submodule read its own config, not the parent's; mirror parent-pinned keys (D12 gate)
 - [release skips uninit memory push](reference_release_uninit_memory_skip.md) — uninitialized memory submodule makes pre-push skip memory; `submodule update --init memory` before any release/parent push
+- [own hooks.json EROFS under sandbox](reference_own_hooks_json_sandbox_erofs.md) — checkout/merge touching `hooks/hooks.json` in gitlore itself fails EROFS (it's this session's live hooks config); retry unsandboxed; a ff-only merge can leave the tree partially updated with HEAD unmoved
 - [evals for e2e happy paths](feedback_evals_happy_path.md) — `just evals` is separate/opt-in, NOT run by `prerelease`/`release`; sentinels in `scripts/run-gate.sh`; write scenarios once D17 slice 3 lands
