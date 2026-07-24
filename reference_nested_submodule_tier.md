@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: d5a70bd9-0134-401c-b513-66b2bfbfbd23
-  modified: 2026-07-21T07:18:09.325Z
+  modified: 2026-07-24T13:21:30.552Z
 ---
 
 Characterized by spike + pinned in `tests/tier_discovery.bats` (D17 slice 3-i-a).
@@ -43,6 +43,21 @@ Characterized by spike + pinned in `tests/tier_discovery.bats` (D17 slice 3-i-a)
   the branch-model unification and funnel into the same `gitlore_prepare_merge`,
   so a per-worktree tier clone behaves exactly like the already-solved
   two-machines-one-remote case. It wants a lockstep test, not a decision.
+- **A tier's `live` reaches the shared remote only via the PARENT repo's
+  `pre-push`** (tiers push before memory, `HEAD:live`). So a tier promotion that
+  is committed-but-unpushed in the origin repo is INVISIBLE to a
+  `/gitlore:add-tier` mount elsewhere: the mount's `fetch origin live:live` reads
+  whatever `live` the remote had at mount time. Diagnosed on cwd-safety
+  2026-07-24 — it mounted `ddaanet` while gitlore's Step-0 61-file `live` was
+  still local, and got the 6/7-file pre-promotion tier. `origin/live` reflog is
+  the timeline (`update by push` entries). Also: the remote's DEFAULT branch
+  `main` stays at the seed forever by design (the ff-only-fetch landing handle),
+  so a fresh `clone`/web view shows the seed, not `live` — a red herring, since
+  `add-tier.sh` detaches at `live`, not the default. Rule for the migration:
+  **push the origin repo before mounting the tier in any sibling.** A stale mount
+  self-heals on the sibling's next SessionStart (`fetch origin live:live` +
+  detach), provided the newer `live` is a fast-forward (it is, promotions build
+  on the seed).
 - **Checking a stale memory branch out drops `memory/.gitmodules`**, so the tier
   looks unmounted and leaves an untracked `<tier>/` dir behind (`warning: unable
   to rmdir`). Mounting a tier must advance the memory trunk, not one branch.
