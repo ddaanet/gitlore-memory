@@ -77,4 +77,4 @@
 - [recall checkpoints](feedback_recall_checkpoints.md) — spontaneous recall is nil; place explicit checkpoints early (input) and late (post-exploration)
 - [submodule config visibility](reference_submodule_config_visibility.md) — hooks firing inside the submodule read its own config, not the parent's; mirror parent-pinned keys (D12 gate)
 - [release skips uninit memory push](reference_release_uninit_memory_skip.md) — uninitialized memory submodule makes pre-push skip memory; `submodule update --init memory` before any release/parent push
-- [evals for e2e happy paths](feedback_evals_happy_path.md) — evals cover the ordinary flow bats can't; `just precommit` fast, `just prerelease` slow; sentinels in `scripts/run-gate.sh`; write them once D17 slice 3 lands
+- [evals for e2e happy paths](feedback_evals_happy_path.md) — `just evals` is separate/opt-in, NOT run by `prerelease`/`release`; sentinels in `scripts/run-gate.sh`; write scenarios once D17 slice 3 lands

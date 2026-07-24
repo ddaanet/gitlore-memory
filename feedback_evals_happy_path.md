@@ -1,16 +1,20 @@
 ---
 name: feedback_evals_happy_path
-description: "evals cover the ordinary flow bats can't; `just precommit` fast, `just prerelease` slow; sentinels in `scripts/run-gate.sh`; write them once D17 slice 3 lands"
+description: "`just evals` is separate/opt-in, NOT run by `prerelease`/`release`; sentinels in `scripts/run-gate.sh`; write scenarios once D17 slice 3 lands"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: 7f6454fc-a230-4fec-989c-c057366f5934
-  modified: 2026-07-23T10:38:50.796Z
+  modified: 2026-07-24T14:31:43.636Z
 ---
 
 Use the eval harness (`tests/evals/`) for end-to-end testing that exercises the
 **happy paths** — the ordinary flow a user actually walks, driven through the
-real agent, not through a script. Run them at two moments: **on release**, and
+real agent, not through a script. Run them explicitly with `just evals` —
+not wired into `precommit`/`prerelease`/`release`, since the 5-round grid costs
+real time and money (decided 2026-07-24: `prerelease` had been `precommit
+evals`, but that made every release pay for a grid most releases don't touch).
+Run on demand **before a release that touches eval-covered flows**, and
 **whenever a prompt changes** (skill, agent, hook `additionalContext`,
 orientation block).
 
@@ -31,11 +35,14 @@ the edges, and an eval's value is proving the whole chain fits together. Keep
 them in the `pass^k` shape the harness already uses, so an agent-side flake is
 distinguishable from a regression.
 
-**Two gates, split by cost (decided 2026-07-21).** `just precommit` is the
+**Two gates, split by cost — revised 2026-07-24.** `just precommit` is the
 **fast, frequent** per-change gate (`check-version`, `lint`, `test`) and evals
-must NOT go in it. `just prerelease` is the **slow, rare** gate — it runs
-`precommit` plus `just evals` — so the expensive run sits next to the last
-irreversible step (wiring in the last paragraph). `ddaa:preflight` probes
+must NOT go in it. `just evals` is the **slow, rare, opt-in** gate — run by
+name, not pulled in by `prerelease` or `release`. (2026-07-21 had wired
+`prerelease: precommit evals` so the expensive run sat next to the last
+irreversible step; 2026-07-24 unwired it — a 5-round eval grid on every
+release was wasteful more often than it was warranted, so `prerelease` reverted
+to plain `precommit` and evals moved to a manual call.) `ddaa:preflight` probes
 `just precommit` first and therefore stays fast; it is a readiness check, not
 the eval gate. Naming: `nightly` is the widely recognized term but names a
 *clock* trigger this has none of; `acceptance` names the test *kind*, not the
@@ -47,8 +54,9 @@ justfile/Makefile, never in the shared skill
 **Redundant re-runs are prevented by content-addressed sentinels — BUILT
 2026-07-21** as `scripts/run-gate.sh NAME CMD...`, one sentinel per gate under
 `$(git rev-parse --git-path gitlore/gates)/NAME`, recorded only on success.
-`precommit` and `evals` each own one; `prerelease` depends on both, so it
-re-runs only the evals after a green `precommit`. The resolved hash inputs:
+`precommit` and `evals` each own one, independently skippable; `prerelease` is
+now just `precommit` (2026-07-24), so it no longer touches the evals sentinel
+at all. The resolved hash inputs:
 
 - **Whole tree, not a per-gate input set.** A narrower set skips more often but
   a forgotten input yields a *stale green*, the one failure a gate must not
@@ -68,15 +76,19 @@ re-runs only the evals after a green `precommit`. The resolved hash inputs:
   and makes all the skip cases silently unprovable. A suite that runs inside
   the thing it tests has to neutralize the ambient environment first.
 
-**`release` depends on `prerelease`**, so one `just release` runs both gates.
-That dependency lives in the vendored `plugin-dev/release.just`, so it was fixed
-upstream in `ddaanet/claude-plugin-dev` (v0.4.0, vendored here 2026-07-23) rather
-than patched in the vendored copy — the generic recipe is the toolkit's, and
-editing it here would drift from upstream
-([[feedback_preflight_stays_generic]], [[feedback_no_in_place_other_repos]]).
-The toolkit makes `prerelease` **mandatory**: just rejects a justfile whose
-dependency names a missing recipe, so a consumer that hasn't defined it fails
-immediately rather than at release time.
+**`release` depends on `prerelease`**, and since 2026-07-24 `prerelease` is
+plain `precommit` in this repo — `just release` no longer runs evals. That
+`release`→`prerelease` dependency lives in the vendored
+`plugin-dev/release.just` (fixed upstream in `ddaanet/claude-plugin-dev`
+v0.4.0, vendored here 2026-07-23) rather than patched in the vendored copy —
+the generic recipe is the toolkit's, and editing it here would drift from
+upstream ([[feedback_preflight_stays_generic]],
+[[feedback_no_in_place_other_repos]]). The toolkit makes `prerelease`
+**mandatory**: just rejects a justfile whose dependency names a missing
+recipe, so a consumer that hasn't defined it fails immediately rather than at
+release time — gitlore satisfies that with `prerelease: precommit`, the
+"most plugins" default the toolkit docs describe, not the widened
+`prerelease: precommit evals` it had between 2026-07-21 and 2026-07-24.
 
 **Scheduled:** write these evals once nested memory is complete (D17 slice 3 —
 after 3-ii composition and 3-iii `/add-tier`), so the scenarios cover the
