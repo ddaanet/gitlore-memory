@@ -1,11 +1,11 @@
 ---
 name: feedback_evals_happy_path
-description: "`just evals` is separate/opt-in, NOT run by `prerelease`/`release`; sentinels in `scripts/run-gate.sh`; write scenarios once D17 slice 3 lands"
+description: "`just evals` is separate/opt-in, NOT run by `prerelease`/`release`; sentinels in `scripts/run-gate.sh`; 5 scenarios exist, and the held 0.4.2 owes a grid run — `03`/`04` walk the reworked compose merge, so run `just evals` as part of the vanished-pointer dig, before the tag"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: 7f6454fc-a230-4fec-989c-c057366f5934
-  modified: 2026-07-24T14:31:43.636Z
+  modified: 2026-07-25T13:02:09.111Z
 ---
 
 Use the eval harness (`tests/evals/`) for end-to-end testing that exercises the
@@ -90,9 +90,19 @@ release time — gitlore satisfies that with `prerelease: precommit`, the
 "most plugins" default the toolkit docs describe, not the widened
 `prerelease: precommit evals` it had between 2026-07-21 and 2026-07-24.
 
-**Scheduled:** write these evals once nested memory is complete (D17 slice 3 —
-after 3-ii composition and 3-iii `/add-tier`), so the scenarios cover the
-finished tier flow rather than a moving target
-([[project_gitlore_global_memory]]). Sharpens
+**Five scenarios exist** (written 2026-07-22, once the tier flow stopped being a
+moving target): `01`/`02` on the memory-commit flow, `03-add-tier`,
+`04-tier-write`, `05-recall`. They sharpen
 [[feedback_no_handrun_tests]]'s "prompt contracts are not bats-testable" from
-"dogfood it by hand" into a repeatable harness.
+"dogfood it by hand" into a repeatable harness
+([[project_gitlore_global_memory]]).
+
+**Owed on the held 0.4.2 (2026-07-25):** the path-keyed three-way root↔carrier
+compose merge is committed but untagged, and `03-add-tier` / `04-tier-write`
+are exactly what walk it end to end. The unit suite covers the merge, but a
+pointer line still vanished from the live store during ordinary index edits and
+could not be reproduced from the committed blobs
+([[project_gitlore_global_memory]]) — which is the case for the grid, not
+against it: the loss happened in the agent-and-shell seam that bats cannot see,
+and that seam is the whole reason these evals exist. Run `just evals` as part
+of that investigation, before the tag.
