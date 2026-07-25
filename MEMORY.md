@@ -1,6 +1,6 @@
 # Memory Index
 
-- [sandbox effects](ddaanet/reference_sandbox_effects.md) — index.lock/"Another git process", phantom dotfiles, sibling worktree "Read-only file system", --resume "No conversation found…", $TMPDIR unset, zellij "no active session"; escapes: dangerouslyDisableSandbox, /add-dir, `!`
+- [sandbox effects](ddaanet/reference_sandbox_effects.md) — index.lock/"Another git process", phantom dotfiles, sibling worktree "Read-only file system", "Device or resource busy" on .claude/settings.json & .git/config (blocks git checkout/reset --hard/atomic mv), --resume "No conversation found…", $TMPDIR unset, zellij "no active session"; escapes: dangerouslyDisableSandbox, /add-dir, `!`
 - [bats + shellcheck gotchas](ddaanet/reference_bats_shellcheck_gotchas.md) — SC2314 bare `! cmd` asserts nothing (use `run !`); `run missing_fn` exits 127 so negatives pass vacuously; @test bodies run under errexit; shellcheck lints .bats; `# shellcheck` comment = directive
 - [git refuses ext:: by default](ddaanet/reference_git_ext_transport.md) — `fatal: transport 'ext' not allowed`; `protocol.ext.allow` defaults `never`, so an `ext::sh -c` injection finding isn't exploitable on default git — probe the policy first
 - [protocol.file.allow blocks submodule clones](ddaanet/reference_git_protocol_file_allow.md) — `fatal: transport 'file' not allowed`; the child *clone* reads `protocol.file.allow`, so repo config can't fix it — use `git -c` or `GIT_CONFIG_COUNT/KEY_0/VALUE_0`
@@ -11,9 +11,11 @@
 - [verify claims at their source](ddaanet/feedback_verify_at_source.md) — verify any claim against its own source before acting: subagent findings, delegated citations, hook-cited limits, handoff/memory status claims, user corrections, spec symbols
 - [examine evidence for drift direction](ddaanet/feedback_examine_evidence_drift.md) — when two co-maintained artifacts diverge, get the drift direction from git history, don't assume a source of truth
 - [loose generation + post-hoc fix](ddaanet/feedback_loose_generation.md) — let generator scaffold freely, constrain at artifact boundary
+- [user: technical depth on LLM mechanism](ddaanet/user_technical_depth.md) — expects rigorous attention/cost/training claims, not hand-waving
 - [decide/plan as late as possible, but not later](ddaanet/feedback_plan_late.md) — defer until evidence arrives, act before inaction decides by default
 - [CC project-dir encoding](ddaanet/reference_cc_project_dir_encoding.md) — `~/.claude/projects/<name>/` = abs path with `[^A-Za-z0-9]`→`-`; to find a transcript search `<session-id>.jsonl`, don't apply the rule; edify's impl incomplete
 - [outside-in TDD when architecture is fixed](ddaanet/feedback_outside_in_tdd.md) — red e2e first, drive units by failure; black-box tests survive refactors
+- [dogfood early](ddaanet/feedback_dogfood_early.md) — run new code on the actual production target the day it ships; fixtures miss real-world bugs
 - [default to automation](ddaanet/feedback_automate_default.md) — automated tests by default; when a manual check is justified
 - [self-contained directives](ddaanet/feedback_self_contained_directives.md) — emit absolute paths + explicit cd; never rely on sub-agent's env or CWD
 - [CC agent discovery](ddaanet/reference_cc_agent_discovery.md) — `Agent type not found`: dispatch needs `<plugin>:<agent>`, never the bare name, and the plugin must be marketplace-installed or `--plugin-dir`-loaded (cwd `agents/` is not auto-discovered); defs cached per-session, so a contract change needs a restart
@@ -76,8 +78,11 @@
 - [gitlore Bash-edit desync](ddaanet/reference_gitlore_bash_edit_desync.md) — `index-compose.sh`/`index-sync-post.sh` fire only on `Write`|`Edit` tool_name, so a `sed`-applied `MEMORY.md` edit desyncs root vs. tier index and later refuses with "duplicate pointer path"
 - [memory index lines are functional](ddaanet/feedback_memory_index_lines_functional.md) — index lines serve agent-matching AND ambient awareness, not just a pointer; don't mechanically shorten them to hit a byte target, especially an advisory one
 - [bundle memory with source](ddaanet/feedback_bundle_memory_with_source.md) — always commit a memory update in the same parent commit as the source change it documents, not as a separate commit; don't over-apply to unrelated pending work
-- [user: technical depth on LLM mechanism](ddaanet/user_technical_depth.md) — expects rigorous attention/cost/training claims, not hand-waving
-- [dogfood early](ddaanet/feedback_dogfood_early.md) — run new code on the actual production target the day it ships; fixtures miss real-world bugs
+- [CC strips terminal-provenance env](ddaanet/reference_cc_env_strip_tmux.md) — TMUX/TMUX_PANE/TERM_PROGRAM/TERM_PROGRAM_VERSION/SSH_CONNECTION are dropped from the session env (rest inherits), so hook-driven send-keys finds no pane; `tmux display -p` guesses the wrong one — capture via a launcher shim under a custom name
+- [settings.json enabledPlugins edit blocked](ddaanet/feedback_settings_enabledplugins_blocked.md) — classifier blocks Claude editing enabledPlugins even after approval; give user a !-command instead
+- [Validate non-TDD tests by mutation](ddaanet/feedback_test_validation_by_mutation.md) — tests written after the code must each be turned red by a deliberate fault to prove they bite
+- [directive states acts only](ddaanet/feedback_directive_states_acts.md) — strip mechanism, re-stated orderings, and literalized meta-notes from agent-facing directives; unactionable detail gets verified and narrated
+- [withhold, don't forbid](ddaanet/feedback_withhold_dont_forbid.md) — naming an identifier to prohibit it supplies the string; say nothing when the reader has no other source
 - [gitlore project overview](project_overview.md) — what gitlore is and why memory lives in a submodule; state notes stop at 2026-05-25 (Plan 07 / D11) — current status is in `project_gitlore_global_memory.md`
 - [gitmoji commit convention](feedback_gitmoji.md) — conventional prefix → emoji, via a plugin-managed commit-msg hook
 - [Plan 02 Dogfood B surprises](feedback_dogfood_b.md) — `.gitmodules` gitignored + gh `--source=.` rejects gitfile submodule
