@@ -1,6 +1,6 @@
 ---
 name: reference-memory-gate-commit-path
-description: "FR11 handoff is ONE call (memory message + handoff-task.md + session name); heredoc into the gitdir is classifier-denied. Magic file MOVED 2026-07-16 to `.claude/gitlore-memory-message` (gitignored; resolver via --show-superproject-working-tree). Commit mechanism BUILT 2026-07-16: `memory-commit-batch.sh` on PostToolBatch commits memory from a file trigger (agent writes message+trigger, hook runs git — sidesteps sandbox+classifier; no Stop hook); once-per-episode nudge in post-tool-use.sh. DOGFOODED 2026-07-16: registration confirmed live in a fresh session; clean-branch fires (trigger consumed across the batch boundary, systemMessage emitted); suppressOutput sends the systemMessage to the user UI, not agent context"
+description: "FR11 handoff is ONE call (memory message + handoff-task.md + session name); the agent writes `.claude/gitlore-memory-message` plus a trigger file and `memory-commit-batch.sh` on PostToolBatch runs the git, since a heredoc into the gitdir is classifier-denied and there is no Stop hook; its `suppressOutput` systemMessage reaches the user UI, not agent context"
 metadata: 
   node_type: memory
   type: reference
