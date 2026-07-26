@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 7f6454fc-a230-4fec-989c-c057366f5934
-  modified: 2026-07-26T17:27:06.679Z
+  modified: 2026-07-26T18:09:55.380Z
 ---
 
 Use the eval harness (`tests/evals/`) for end-to-end testing that exercises the
@@ -76,12 +76,14 @@ bought nothing once the Makefile was gone). The resolved hash inputs:
   `tests/*.bats`, so an unstaged new suite changes what runs.
 - **A failed hash records nothing and runs the gate.** Not hypothetical. The
   first design built the hash with `git add -A` into a throwaway index, which
-  dies outright on any working-tree path git will not index — and an empty hash
-  suppressed the *record* step as well as the skip, so the gate was not degraded
-  but inert, never skipping and never recording, for a day, with the only
-  diagnostic on stderr where nothing captured it. Hence also: every component of
-  the stream fails explicitly, since bash suspends errexit inside the command
-  substitution the hash runs in.
+  dies outright on any working-tree path git will not index — the phantom home
+  dotfiles the sandbox surfaces ([[reference_sandbox_effects]]) are exactly
+  that, and this repo briefly had real ones too. An empty hash suppressed the
+  *record* step as well as the skip, so the gate was not degraded but inert,
+  never skipping and never recording, for a day, with the only diagnostic on
+  stderr where nothing captured it. Hence also: every component of the stream
+  fails explicitly, since bash suspends errexit inside the command substitution
+  the hash runs in.
 - Escape hatch: `GITLORE_GATE_FORCE=1` — which `tests/justfile_gates.bats` must
   `unset` in the subshell it loads the prolog into, because the suite runs
   *inside* a gate and the ambient value otherwise reaches every gate under test
