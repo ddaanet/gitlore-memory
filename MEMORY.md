@@ -1,6 +1,6 @@
 # Memory Index
 
-- [sandbox effects](ddaanet/reference_sandbox_effects.md) — index.lock/"Another git process", sibling worktree "Read-only file system", "Device or resource busy" on .claude/settings.json & .git/config, --resume "No conversation found…", $TMPDIR unset, zellij "no active session"; escapes: dangerouslyDisableSandbox, /add-dir, `!`
+- [sandbox effects](ddaanet/reference_sandbox_effects.md) — index.lock/"Another git process", phantom dotfiles, sibling worktree "Read-only file system", "Device or resource busy" on .claude/settings.json & .git/config, --resume "No conversation found…", $TMPDIR unset, zellij "no active session"; escapes: dangerouslyDisableSandbox, /add-dir, `!`
 - [bats + shellcheck gotchas](ddaanet/reference_bats_shellcheck_gotchas.md) — SC2314 bare `! cmd` asserts nothing (use `run !`); `run missing_fn` exits 127 so negatives pass vacuously; @test bodies run under errexit; shellcheck lints .bats; `# shellcheck` comment = directive
 - [git refuses ext:: by default](ddaanet/reference_git_ext_transport.md) — `fatal: transport 'ext' not allowed`; `protocol.ext.allow` defaults `never`, so an `ext::sh -c` finding isn't exploitable — probe the policy first
 - [protocol.file.allow blocks submodule clones](ddaanet/reference_git_protocol_file_allow.md) — `fatal: transport 'file' not allowed`; the child *clone* reads it, so repo config can't fix it — use `git -c` or `GIT_CONFIG_COUNT/KEY_0/VALUE_0`
