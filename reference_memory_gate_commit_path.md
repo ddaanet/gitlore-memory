@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 378fd1af-f732-4fe5-89a2-aa6cc31efb26
+  modified: 2026-07-26T18:59:53.817Z
 ---
 
 **The intended shape.** The magic message file is *designed* to be agent-written.
@@ -120,5 +121,4 @@ which IS injected model-side. Full commit path (dirty memory + approved summary 
 real commit + live advance) exercised on this session's own memory changes.
 
 Related: [[feedback_memory_before_root_commit]] (memory commits before the parent
-and pushes alongside it), [[feedback_handoff_files_managed]],
-[[feedback_handoff_with_commit]].
+and pushes alongside it).

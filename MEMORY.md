@@ -90,16 +90,14 @@
 - [errexit is off inside a condition](ddaanet/reference_errexit_suspended_in_condition.md) — `set -e` is suspended for anything reached from `if x=$(f)`/`while`/`&&`/`!`, subshells included, so a mid-function failure neither aborts nor shows; fail each step with `|| exit 1`/`|| return 1` (pipefail and nounset are NOT suspended)
 - [a correction applies to what it names](ddaanet/feedback_correction_scope.md) — don't demolish the general claim the corrected instance belonged to; quote the scope back, ask if the general claim survives, and say what you are NOT changing
 - [loose generation + post-hoc fix](ddaanet/feedback_loose_generation.md) — let generator scaffold freely, constrain at artifact boundary
+- [a memory is not a skill's job](ddaanet/feedback_memory_not_skill_job.md) — "when using <skill>, do X" is a category error; delete it and fix the skill, accuracy is not the test
 - [gitlore project overview](project_overview.md) — what gitlore is and why memory lives in a submodule; state notes stop at 2026-05-25 — current status is in `project_gitlore_global_memory.md`
 - [gitmoji commit convention](feedback_gitmoji.md) — conventional prefix → emoji, via a plugin-managed commit-msg hook
 - [Plan 02 Dogfood B surprises](feedback_dogfood_b.md) — `.gitmodules` gitignored + gh `--source=.` rejects gitfile submodule
 - [nested submodule tier mechanics](reference_nested_submodule_tier.md) — tier gitdir at `.git/modules/gitlore-memory/modules/<tier>`; `fetch origin live:live` is ff-only for free; a linked memory worktree gets its OWN tier clone under `worktrees/<wt>/modules/<tier>`; seed tier remotes default `main` with `live` alongside — a `live` default gets checked out by the mount and the ff-only fetch then refuses; mounting needs no commit inside memory
 - [memory submodule lockstep](feedback_memory_before_root_commit.md) — commit memory/ before the root commit, push it alongside; lockstep is checked on `live`, not `main`
 - [autoMemoryDirectory setting](reference_auto_memory_directory.md) — gitlore points CC's autoMemoryDirectory at the memory/ submodule; set by install + session-start hook, effective next session
-- [handoff files are tooling-managed](feedback_handoff_files_managed.md) — don't hand-edit `.claude/handoff*.md` mid-session; write only via the handoff skill
-- [handoff rides the code commit](feedback_handoff_with_commit.md) — fold handoff files into the same commit as the work; no separate snapshot commit
-- [revdiff iTerm/tmux-CC popup](reference_revdiff_iterm_tmux_cc.md) — `display-popup` invisible under tmux-CC/multi-client; use `new-window` + a script file
-- [preflight stays generic](feedback_preflight_stays_generic.md) — project-specific release gates go in the project's Makefile/CI, not ddaa:preflight
+- [preflight stays generic](feedback_preflight_stays_generic.md) — project-specific release gates go in the project's own justfile/CI, not ddaa:preflight
 - [memory gate commit path](reference_memory_gate_commit_path.md) — FR11 handoff is ONE call (memory message + handoff-task.md + session name); the agent writes `.claude/gitlore-memory-message` plus a trigger file and `memory-commit-batch.sh` on PostToolBatch runs the git, since a heredoc into the gitdir is classifier-denied and there is no Stop hook; its `suppressOutput` systemMessage reaches the user UI, not agent context
 - [memory retrieval in practice](feedback_memory_retrieval_in_practice.md) — what CC's passive recall classifier actually attaches; the index is a routing table, not the content
 - [CC memory retrieval is agentic](reference_cc_memory_retrieval_agentic.md) — recall = tool-gated Read steered by root MEMORY.md ("Recalled 1 memory"); nested team/MEMORY.md NOT always-loaded
