@@ -1,6 +1,6 @@
 ---
 name: cc-memory-retrieval-agentic
-description: "CC auto-memory retrieval is an agentic per-query classifier (attaches ≤5 files), not mechanical index-loading; team/ subdir + combined index is a native two-tier surface; autoMemoryDirectory is single-path"
+description: "recall = tool-gated Read steered by root MEMORY.md (\"Recalled 1 memory\"); nested team/MEMORY.md NOT always-loaded"
 metadata: 
   node_type: memory
   type: reference

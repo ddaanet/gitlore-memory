@@ -1,6 +1,6 @@
 ---
 name: reference_own_hooks_json_sandbox_erofs
-description: "checkout/merge touching hooks/hooks.json fails EROFS under sandbox in the gitlore repo itself, since it's this session's own active hooks config; other files in the same checkout succeed, so a ff-only merge can leave the tree partially updated with HEAD unmoved"
+description: "checkout/merge touching `hooks/hooks.json` in gitlore itself fails EROFS; retry unsandboxed; a ff-only merge can leave the tree partially updated with HEAD unmoved"
 metadata: 
   node_type: memory
   type: reference

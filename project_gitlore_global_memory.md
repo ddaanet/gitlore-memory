@@ -1,6 +1,6 @@
 ---
 name: gitlore-global-memory-investigation
-description: "N-tier org memory (FR15/D17) + active recall (FR16/D18): tiers as nested submodules, agent-picks-directory routing, activation via the `memory/.gitlore-tiers` manifest. READ IT BEFORE touching tier mounting, index composition, the `live` branch model, tier lockstep, `/gitlore:add-tier`, the recall request file, or the eval scenarios covering them — it carries current slice status, the sibling-repo migration worklist, and the settled decisions (index canonical for a line's TEXT and its PRESENCE, non-destructively — no coverage/prune/dedup; detached-at-`live`; tier remotes default to `main` with `live` alongside; one merge policy at every level; root↔carrier compose is a path-keyed three-way merge over `refs/gitlore/compose-base`)"
+description: "N-tier org memory (FR15/D17) + active recall (FR16/D18): tiers as nested submodules, agent-picks-directory routing, activation via the `memory/.gitlore-tiers` manifest. READ IT BEFORE touching tier mounting, index composition, the `live` branch model, tier lockstep, `/gitlore:add-tier`, the recall request file, or their eval scenarios — it carries current slice status, the sibling-repo migration worklist, and the settled decisions (index canonical for a line's TEXT and its PRESENCE, non-destructively — no coverage/prune/dedup; detached-at-`live`; root↔carrier compose is a path-keyed three-way merge over `refs/gitlore/compose-base`)"
 metadata: 
   node_type: memory
   type: project

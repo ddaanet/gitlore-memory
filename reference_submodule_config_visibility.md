@@ -1,6 +1,6 @@
 ---
 name: reference-submodule-config-visibility
-description: "A git hook firing inside the memory submodule reads the submodule's own config, not the parent's — parent-pinned keys must be mirrored in."
+description: "hooks firing inside the submodule read its own config, not the parent's; mirror parent-pinned keys"
 metadata: 
   node_type: memory
   type: reference
