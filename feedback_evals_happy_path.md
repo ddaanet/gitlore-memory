@@ -1,11 +1,11 @@
 ---
 name: feedback_evals_happy_path
-description: "`just evals` is separate/opt-in, NOT run by `prerelease`/`release`; sentinels in `scripts/run-gate.sh`; the held 0.4.2 owes a grid run before the tag as part of the vanished-pointer dig — `03`/`04` walk the reworked compose merge"
+description: "`just evals` is separate/opt-in, NOT run by `prerelease`/`release`; gate sentinels hash declared inputs, in the justfile's `bash_prolog`; the held 0.4.2 owes a grid run before the tag as part of the vanished-pointer dig — `03`/`04` walk the reworked compose merge"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: 7f6454fc-a230-4fec-989c-c057366f5934
-  modified: 2026-07-25T13:02:09.111Z
+  modified: 2026-07-26T17:27:06.679Z
 ---
 
 Use the eval harness (`tests/evals/`) for end-to-end testing that exercises the
@@ -51,28 +51,40 @@ this repo already uses. Either way the wiring lives in the project's
 justfile/Makefile, never in the shared skill
 ([[feedback_preflight_stays_generic]]).
 
-**Redundant re-runs are prevented by content-addressed sentinels — BUILT
-2026-07-21** as `scripts/run-gate.sh NAME CMD...`, one sentinel per gate under
-`$(git rev-parse --git-path gitlore/gates)/NAME`, recorded only on success.
+**Redundant re-runs are prevented by content-addressed sentinels**, one per gate
+under `$(git rev-parse --git-path gitlore/gates)/NAME`, recorded only on success.
 `precommit` and `evals` each own one, independently skippable; `prerelease` is
-now just `precommit` (2026-07-24), so it no longer touches the evals sentinel
-at all. The resolved hash inputs:
+plain `precommit` (2026-07-24), so it never touches the evals sentinel. The
+logic is `check-sentinel` / `record-sentinel` / `gate-inputs-hash`, bash
+functions in the justfile's `bash_prolog` that every shebang recipe expands
+(2026-07-26 — it was `scripts/run-gate.sh` until then, and a separate script
+bought nothing once the Makefile was gone). The resolved hash inputs:
 
-- **Whole tree, not a per-gate input set.** A narrower set skips more often but
-  a forgotten input yields a *stale green*, the one failure a gate must not
-  have. Over-running is the acceptable direction.
-- **Content-addressed, not HEAD-addressed** — throwaway index: `cp` the real
-  index, `git add -A`, `git write-tree`. A release commits *after* precommit
-  goes green, and that commit must not invalidate the sentinel.
-- **Untracked non-ignored files count** (hence `add -A`, not `add -u`):
-  `make test` globs `tests/*.bats`, so an unstaged new suite changes what runs.
-- **A failed hash records nothing and runs the gate.** Not hypothetical — under
-  a sandbox surfacing phantom home dotfiles `git add -A` dies outright, and the
-  first draft recorded the half-updated index's hash, which would have skipped
-  the *next* run ([[feedback_git_status_sandbox]]).
-- Escape hatch: `GITLORE_GATE_FORCE=1` — which `tests/gate_sentinel.bats` must
-  `unset` in `setup`, because the suite runs *inside* a gate (`just precommit`
-  → `make test`) and the ambient value otherwise reaches every gate under test
+- **Declared inputs, not the whole tree.** `precommit_inputs` names what the
+  checks read; `evals_inputs` adds `agents commands skills`, which only the
+  evals reach. `memory/` and `docs/` are in neither. This reverses the
+  2026-07-21 whole-tree call, whose fear — a forgotten input yielding a *stale
+  green* — is real, so the allow-list is guarded instead: every declared path
+  must exist, and every top-level entry must be declared or on a written-down
+  exclusion list. Both directions narrow silently otherwise.
+- **Content-addressed, not HEAD-addressed**: `git ls-files -z --cached --others
+  --exclude-standard` over the declared pathspecs, each name then its contents,
+  through `cksum`, with the unpinned tool versions in the same stream. A release
+  commits *after* precommit goes green, and that commit must not invalidate the
+  sentinel.
+- **Untracked non-ignored files count** (hence `--others`): `just test` globs
+  `tests/*.bats`, so an unstaged new suite changes what runs.
+- **A failed hash records nothing and runs the gate.** Not hypothetical. The
+  first design built the hash with `git add -A` into a throwaway index, which
+  dies outright on any working-tree path git will not index — and an empty hash
+  suppressed the *record* step as well as the skip, so the gate was not degraded
+  but inert, never skipping and never recording, for a day, with the only
+  diagnostic on stderr where nothing captured it. Hence also: every component of
+  the stream fails explicitly, since bash suspends errexit inside the command
+  substitution the hash runs in.
+- Escape hatch: `GITLORE_GATE_FORCE=1` — which `tests/justfile_gates.bats` must
+  `unset` in the subshell it loads the prolog into, because the suite runs
+  *inside* a gate and the ambient value otherwise reaches every gate under test
   and makes all the skip cases silently unprovable. A suite that runs inside
   the thing it tests has to neutralize the ambient environment first.
 
