@@ -10,7 +10,6 @@
 - [skill vs command](ddaanet/feedback_skill_vs_command.md) — self-triggering skill when condition is mechanical/detectable; command only for explicit user-initiated actions
 - [verify claims at their source](ddaanet/feedback_verify_at_source.md) — verify any claim against its own source before acting: subagent findings, delegated citations, hook-cited limits, handoff/memory status, user corrections
 - [examine evidence for drift direction](ddaanet/feedback_examine_evidence_drift.md) — when two co-maintained artifacts diverge, get the drift direction from git history, don't assume a source of truth
-- [loose generation + post-hoc fix](ddaanet/feedback_loose_generation.md) — let generator scaffold freely, constrain at artifact boundary
 - [user: technical depth on LLM mechanism](ddaanet/user_technical_depth.md) — expects rigorous attention/cost/training claims, not hand-waving
 - [decide/plan as late as possible, but not later](ddaanet/feedback_plan_late.md) — defer until evidence arrives, act before inaction decides by default
 - [CC project-dir encoding](ddaanet/reference_cc_project_dir_encoding.md) — `~/.claude/projects/<name>/` = abs path with `[^A-Za-z0-9]`→`-`; to find a transcript search `<session-id>.jsonl`, don't apply the rule
@@ -88,6 +87,9 @@
 - [checkout clears merge state](ddaanet/reference_git_checkout_clears_merge_state.md) — `git checkout` silently unlinks MERGE_HEAD/MERGE_MSG, so a *clean* `merge --no-commit` dies on any later re-checkout while its index survives; recover by restoring both pointers after `write-tree` == `merge-tree --write-tree`
 - [index compaction loses triggers](ddaanet/feedback_index_compaction_triggers.md) — trimming index lines keeps prescriptions and cuts symptoms/identifiers; count each literal index-wide before and after — falling to zero is unreachable, falling to one on another line MISROUTES; have someone else audit the diff
 - [detect liveness, not presence](ddaanet/feedback_detect_liveness_not_presence.md) — a foreign tool's state file needs the *current* layout plus an identity marker inside it: layouts move (the old path becomes a declared stray) and abandoned files are never cleaned up, so `[ -f known/path ]` false-positives; fail open, pick newest, stay read-only
+- [errexit is off inside a condition](ddaanet/reference_errexit_suspended_in_condition.md) — `set -e` is suspended for anything reached from `if x=$(f)`/`while`/`&&`/`!`, subshells included, so a mid-function failure neither aborts nor shows; fail each step with `|| exit 1`/`|| return 1` (pipefail and nounset are NOT suspended)
+- [a correction applies to what it names](ddaanet/feedback_correction_scope.md) — don't demolish the general claim the corrected instance belonged to; quote the scope back, ask if the general claim survives, and say what you are NOT changing
+- [loose generation + post-hoc fix](ddaanet/feedback_loose_generation.md) — let generator scaffold freely, constrain at artifact boundary
 - [gitlore project overview](project_overview.md) — what gitlore is and why memory lives in a submodule; state notes stop at 2026-05-25 — current status is in `project_gitlore_global_memory.md`
 - [gitmoji commit convention](feedback_gitmoji.md) — conventional prefix → emoji, via a plugin-managed commit-msg hook
 - [Plan 02 Dogfood B surprises](feedback_dogfood_b.md) — `.gitmodules` gitignored + gh `--source=.` rejects gitfile submodule
