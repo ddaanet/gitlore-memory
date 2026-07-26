@@ -83,6 +83,7 @@
 - [Validate non-TDD tests by mutation](ddaanet/feedback_test_validation_by_mutation.md) — tests written after the code must each be turned red by a deliberate fault to prove they bite
 - [directive states acts only](ddaanet/feedback_directive_states_acts.md) — strip mechanism, re-stated orderings, and literalized meta-notes from agent-facing directives; unactionable detail gets verified and narrated
 - [withhold, don't forbid](ddaanet/feedback_withhold_dont_forbid.md) — naming an identifier to prohibit it supplies the string; say nothing when the reader has no other source
+- [checkout clears merge state](ddaanet/reference_git_checkout_clears_merge_state.md) — `git checkout` silently unlinks MERGE_HEAD/MERGE_MSG (`remove_branch_state`), so a *clean* `merge --no-commit` dies on any later re-checkout while its index survives; recover by restoring both pointers after `write-tree` == `merge-tree --write-tree`
 - [gitlore project overview](project_overview.md) — what gitlore is and why memory lives in a submodule; state notes stop at 2026-05-25 (Plan 07 / D11) — current status is in `project_gitlore_global_memory.md`
 - [gitmoji commit convention](feedback_gitmoji.md) — conventional prefix → emoji, via a plugin-managed commit-msg hook
 - [Plan 02 Dogfood B surprises](feedback_dogfood_b.md) — `.gitmodules` gitignored + gh `--source=.` rejects gitfile submodule
