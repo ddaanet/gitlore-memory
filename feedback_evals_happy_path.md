@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 7f6454fc-a230-4fec-989c-c057366f5934
-  modified: 2026-07-26T18:09:55.380Z
+  modified: 2026-07-26T20:04:20.412Z
 ---
 
 Use the eval harness (`tests/evals/`) for end-to-end testing that exercises the
@@ -108,15 +108,13 @@ release time — gitlore satisfies that with `prerelease: precommit`, the
 moving target): `01`/`02` on the memory-commit flow, `03-add-tier`,
 `04-tier-write`, `05-recall`. They sharpen
 [[feedback_no_handrun_tests]]'s "prompt contracts are not bats-testable" from
-"dogfood it by hand" into a repeatable harness
-([[project_gitlore_global_memory]]).
+"dogfood it by hand" into a repeatable harness.
 
 **Owed on the held 0.4.2 (2026-07-25):** the path-keyed three-way root↔carrier
 compose merge is committed but untagged, and `03-add-tier` / `04-tier-write`
 are exactly what walk it end to end. The unit suite covers the merge, but a
 pointer line still vanished from the live store during ordinary index edits and
-could not be reproduced from the committed blobs
-([[project_gitlore_global_memory]]) — which is the case for the grid, not
+could not be reproduced from the committed blobs — which is the case for the grid, not
 against it: the loss happened in the agent-and-shell seam that bats cannot see,
 and that seam is the whole reason these evals exist. Run `just evals` as part
 of that investigation, before the tag.

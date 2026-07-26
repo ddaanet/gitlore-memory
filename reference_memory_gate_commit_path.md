@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 378fd1af-f732-4fe5-89a2-aa6cc31efb26
-  modified: 2026-07-26T18:59:53.817Z
+  modified: 2026-07-26T20:04:24.989Z
 ---
 
 **The intended shape.** The magic message file is *designed* to be agent-written.
@@ -48,8 +48,7 @@ write: `.claude/` is sandbox-writable and carries no audit-tampering shape. The
 denials above make the move load-bearing rather than merely nicer — the intended
 one-call handoff cannot execute at all under auto mode while the file sits in the
 gitdir. The name is deliberate: it leaves room for nested/N-tier memory repos as
-`.claude/gitlore-memory-<repo>-message/` (e.g. `-ddaa-`) — see
-[[project_gitlore_global_memory]]. Needs a `.gitignore` entry so the ephemeral
+`.claude/gitlore-memory-<repo>-message/` (e.g. `-ddaa-`). Needs a `.gitignore` entry so the ephemeral
 message never dirties the tracked tree.
 
 **DONE 2026-07-16 — relocate implemented.** `gitlore_commit_msg_file` now returns

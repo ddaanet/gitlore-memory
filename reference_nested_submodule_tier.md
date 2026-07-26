@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: d5a70bd9-0134-401c-b513-66b2bfbfbd23
-  modified: 2026-07-24T13:21:30.552Z
+  modified: 2026-07-26T20:04:08.371Z
 ---
 
 Characterized by spike + pinned in `tests/tier_discovery.bats` (D17 slice 3-i-a).
@@ -62,5 +62,5 @@ Characterized by spike + pinned in `tests/tier_discovery.bats` (D17 slice 3-i-a)
   looks unmounted and leaves an untracked `<tier>/` dir behind (`warning: unable
   to rmdir`). Mounting a tier must advance the memory trunk, not one branch.
 
-See [[submodule-escape-to-parent]], [[git-hook-env-leak]],
-[[gitlore-global-memory-investigation]].
+See [[reference_submodule_escape_to_parent]], [[reference_git_hook_env_leak]],
+and D17 in `docs/design.md`.

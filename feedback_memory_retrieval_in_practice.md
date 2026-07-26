@@ -5,10 +5,10 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 8a4f5b31-d418-4b46-ad38-b5635e446776
-  modified: 2026-07-22T06:21:51.256Z
+  modified: 2026-07-26T20:03:56.595Z
 ---
 
-In practice, individual memory files are rarely if ever read spontaneously — the agent answers from what is already in context (MEMORY.md). Update (2026-07-14): the mechanism is now known — CC runs a *separate per-query classifier agent* that attaches ≤5 relevant files, deliberately conservative (see [[cc-memory-retrieval-agentic]]). So the practical under-retrieval is by-design selectivity, not an absent instruction — confirmed empirically (2026-07-14): attachment DOES fire (positive control 100%), but the classifier is probabilistic and conservative (an unindexed subdir file selected only 75%). The classifier keys on BOTH the MEMORY.md one-liners AND per-file frontmatter descriptions; listing a file in MEMORY.md materially boosts its retrieval reliability. See [[cc-memory-retrieval-agentic]] and [[gitlore-global-memory-investigation]].
+In practice, individual memory files are rarely if ever read spontaneously — the agent answers from what is already in context (MEMORY.md). Update (2026-07-14): the mechanism is now known — CC runs a *separate per-query classifier agent* that attaches ≤5 relevant files, deliberately conservative (see [[cc-memory-retrieval-agentic]]). So the practical under-retrieval is by-design selectivity, not an absent instruction — confirmed empirically (2026-07-14): attachment DOES fire (positive control 100%), but the classifier is probabilistic and conservative (an unindexed subdir file selected only 75%). The classifier keys on BOTH the MEMORY.md one-liners AND per-file frontmatter descriptions; listing a file in MEMORY.md materially boosts its retrieval reliability. See [[reference_cc_memory_retrieval_agentic]].
 
 **Why:** The agent has no observable obligation to Read anything before responding. Pattern-matching descriptions to task context may be instructed by CC's hidden system prompt, but if so the agent does not reliably act on it.
 
