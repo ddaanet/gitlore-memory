@@ -1,6 +1,6 @@
 ---
 name: nested-submodule-tier-mechanics
-description: "tier gitdir at `.git/modules/gitlore-memory/modules/<tier>`; `fetch origin live:live` is ff-only for free (works only because `live` is never checked out as a branch); a D11 linked memory worktree gets its OWN independent tier clone under `worktrees/<wt>/modules/<tier>`; seed a tier remote with default branch `main` and `live` alongside — a `live` default gets checked out by the mount and the ff-only fetch then refuses; mounting needs no commit inside memory"
+description: "tier gitdir at `.git/modules/gitlore-memory/modules/<tier>`; `fetch origin live:live` is ff-only for free; a linked memory worktree gets its OWN tier clone under `worktrees/<wt>/modules/<tier>`; seed tier remotes default `main` with `live` alongside — a `live` default gets checked out by the mount and the ff-only fetch then refuses; mounting needs no commit inside memory"
 metadata: 
   node_type: memory
   type: reference

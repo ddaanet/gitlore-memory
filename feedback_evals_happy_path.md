@@ -1,6 +1,6 @@
 ---
 name: feedback_evals_happy_path
-description: "`just evals` is separate/opt-in, NOT run by `prerelease`/`release`; sentinels in `scripts/run-gate.sh`; 5 scenarios exist, and the held 0.4.2 owes a grid run — `03`/`04` walk the reworked compose merge, so run `just evals` as part of the vanished-pointer dig, before the tag"
+description: "`just evals` is separate/opt-in, NOT run by `prerelease`/`release`; sentinels in `scripts/run-gate.sh`; the held 0.4.2 owes a grid run before the tag as part of the vanished-pointer dig — `03`/`04` walk the reworked compose merge"
 metadata: 
   node_type: memory
   type: feedback

@@ -1,6 +1,6 @@
 ---
 name: reference_auto_memory_directory
-description: "gitlore points CC's autoMemoryDirectory setting at the memory/ submodule; a memory submodule and this setting are two halves of one mechanism"
+description: "gitlore points CC's autoMemoryDirectory at the memory/ submodule; set by install + session-start hook, effective next session"
 metadata: 
   node_type: memory
   type: reference

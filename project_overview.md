@@ -1,6 +1,6 @@
 ---
 name: gitlore project overview
-description: "what gitlore is and why memory lives in a submodule; state notes stop at 2026-05-25 (Plan 07 / D11) — current status is in `project_gitlore_global_memory.md`"
+description: "what gitlore is and why memory lives in a submodule; state notes stop at 2026-05-25 — current status is in `project_gitlore_global_memory.md`"
 type: project
 originSessionId: 44430e43-5ab7-4730-8696-8993292db475
 ---
