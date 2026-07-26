@@ -19,6 +19,7 @@
 - [default to automation](ddaanet/feedback_automate_default.md) — automated tests by default; when a manual check is justified
 - [self-contained directives](ddaanet/feedback_self_contained_directives.md) — emit absolute paths + explicit cd; never rely on sub-agent's env or CWD
 - [CC agent discovery](ddaanet/reference_cc_agent_discovery.md) — `Agent type not found`: dispatch needs `<plugin>:<agent>`, never the bare name, and the plugin must be marketplace-installed or `--plugin-dir`-loaded (cwd `agents/` is not auto-discovered); defs cached per-session
+- [large docs review](ddaanet/feedback_large_docs_review.md) — for big plan/spec docs, flag high-risk sections explicitly rather than asking for full eyeball pass
 - [plan length matches work](ddaanet/feedback_plan_length_matches_work.md) — plan doc length tracks the executable work, not the topic
 - [git hook env leak](ddaanet/reference_git_hook_env_leak.md) — `index file open failed: Not a directory` in a hook = leaked repo-local `GIT_*`; `unset $(git rev-parse --local-env-vars)`, but save/restore `GIT_INDEX_FILE` for a staging `git add` or it dies on `Unable to create '.git/index.lock': File exists`
 - [submodule escape to parent](ddaanet/reference_submodule_escape_to_parent.md) — `git -C`/`cd` into a submodule with no `.git` silently operates on the **parent**; symptom: bogus 160000 gitlink or a stray `git branch`; guard `[ -e "$sub/.git" ]`; linked worktree = `--git-dir` ≠ `--git-common-dir`
@@ -86,6 +87,7 @@
 - [turn vs call](ddaanet/feedback_turn_call_terminology.md) — "turn" = a *user* turn, not an API round-trip and not a tool call; "call" = an API or tool call
 - [checkout clears merge state](ddaanet/reference_git_checkout_clears_merge_state.md) — `git checkout` silently unlinks MERGE_HEAD/MERGE_MSG, so a *clean* `merge --no-commit` dies on any later re-checkout while its index survives; recover by restoring both pointers after `write-tree` == `merge-tree --write-tree`
 - [index compaction loses triggers](ddaanet/feedback_index_compaction_triggers.md) — trimming index lines keeps prescriptions and cuts symptoms/identifiers; count each literal index-wide before and after — falling to zero is unreachable, falling to one on another line MISROUTES; have someone else audit the diff
+- [detect liveness, not presence](ddaanet/feedback_detect_liveness_not_presence.md) — a foreign tool's state file needs the *current* layout plus an identity marker inside it: layouts move (the old path becomes a declared stray) and abandoned files are never cleaned up, so `[ -f known/path ]` false-positives; fail open, pick newest, stay read-only
 - [gitlore project overview](project_overview.md) — what gitlore is and why memory lives in a submodule; state notes stop at 2026-05-25 — current status is in `project_gitlore_global_memory.md`
 - [gitmoji commit convention](feedback_gitmoji.md) — conventional prefix → emoji, via a plugin-managed commit-msg hook
 - [Plan 02 Dogfood B surprises](feedback_dogfood_b.md) — `.gitmodules` gitignored + gh `--source=.` rejects gitfile submodule
