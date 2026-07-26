@@ -1,6 +1,6 @@
 ---
 name: feedback-preflight-stays-generic
-description: "ddaa:preflight must stay project-agnostic; project-specific release gates live in the project's own Makefile/CI"
+description: "project-specific release gates go in the project's own justfile/CI, not ddaa:preflight"
 metadata: 
   node_type: memory
   type: feedback
