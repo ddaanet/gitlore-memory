@@ -1,5 +1,6 @@
 # Memory Index
 
+- [tier routing: plugin-shaped litmus test](ddaanet/feedback_tier_routing_plugin_shaped.md) — route an operational gotcha to ddaanet (not project memory) when its mechanism depends on the repo being plugin-shaped, not on this repo's own content
 - [sandbox effects](ddaanet/reference_sandbox_effects.md) — index.lock/"Another git process", phantom dotfiles, sibling worktree "Read-only file system", "Device or resource busy" on .claude/settings.json & .git/config, own hooks.json unlink EROFS, --resume "No conversation found…", $TMPDIR unset, zellij "no active session"; escapes: dangerouslyDisableSandbox, /add-dir, `!`
 - [bats + shellcheck gotchas](ddaanet/reference_bats_shellcheck_gotchas.md) — SC2314 bare `! cmd` asserts nothing (use `run !`); `run missing_fn` exits 127 so negatives pass vacuously; @test bodies run under errexit; shellcheck lints .bats; `# shellcheck` comment = directive
 - [git refuses ext:: by default](ddaanet/reference_git_ext_transport.md) — `fatal: transport 'ext' not allowed`; `protocol.ext.allow` defaults `never`, so an `ext::sh -c` finding isn't exploitable — probe the policy first
