@@ -2,7 +2,7 @@
 
 - [check parallelism assumption before perf fix](ddaanet/feedback_perf_fix_check_parallelism_assumption.md) — before proposing --jobs/-P/-j, confirm spare cores exist; otherwise cut per-unit work (cache/reuse) first
 - [sandbox effects](ddaanet/reference_sandbox_effects.md) — index.lock/"Another git process"; phantom dotfiles; sibling worktree "Read-only file system"; "Device or resource busy" on .claude/settings.json & .git/config (checkout/reset --hard/mv); own hooks.json unlink EROFS; --resume "No conversation found…"; $TMPDIR unset; zellij "no active session" — escapes: dangerouslyDisableSandbox, /add-dir, `!`
-- [bats + shellcheck gotchas](ddaanet/reference_bats_shellcheck_gotchas.md) — SC2314 bare `! cmd` asserts nothing (`run !`); `run missing_fn` exits 127 (vacuous negatives); @test runs under errexit; shellcheck lints .bats; `# shellcheck` = directive
+- [bats + shellcheck gotchas](ddaanet/reference_bats_shellcheck_gotchas.md) — SC2314 bare `! cmd` asserts nothing (`run !`); `run missing_fn` exits 127 (vacuous negatives); `grep -qF` matches any ONE line of a multi-line pattern; @test runs under errexit; shellcheck lints .bats; `# shellcheck` = directive
 - [git refuses ext:: by default](ddaanet/reference_git_ext_transport.md) — `fatal: transport 'ext' not allowed`; `protocol.ext.allow` defaults `never` — an `ext::sh -c` injection isn't exploitable by default; probe policy first
 - [protocol.file.allow blocks submodule clones](ddaanet/reference_git_protocol_file_allow.md) — `fatal: transport 'file' not allowed`; child *clone* reads it — repo config can't fix it; use `git -c` or `GIT_CONFIG_COUNT/KEY_0/VALUE_0`
 - [mutation-check negative assertions](ddaanet/feedback_mutation_check_negatives.md) — a "stays silent" negative, or a positive match on a shared channel, passes vacuously; mutate the guard and watch it go red first
@@ -61,6 +61,7 @@
 - [gitlore memory in git](ddaanet/feedback_gitlore_memory.md) — memory/ is tracked by gitlore; commit it with code changes, never gitignore it
 - [Review model selection](ddaanet/feedback_review_model_selection.md) — use Sonnet (min) for reviewer subagents; Haiku misses subtle issues
 - [No compat aliases](ddaanet/feedback_no_compat_aliases.md) — when removing a constant, patch all consumers directly; compat aliases keep tech debt alive
+- [no transition special cases](ddaanet/feedback_no_transition_special_cases.md) — user base of one ⇒ no branch or diagnostic narrative for a version transition in your own tooling; fix forward, one fact plus one recovery act
 - [uv: sync only, direnv venv](ddaanet/feedback_uv_direnv_venv.md) — no `uv run` under Claude; `uv sync` only + direnv exports VIRTUAL_ENV & PATH prefix; recipes call bare `pytest`
 - [Hook input schema](ddaanet/reference_hook_input_schema.md) — base stdin=`session_id`/`transcript_path`/`cwd`+optional `prompt_id`/`permission_mode`/`agent_id`/`agent_type`/`model`/`session_title`; no worktree-root field; `CwdChanged`=observational; `WorktreeCreate` gives a path, doesn't gate; `PostToolBatch` fires per batch (twice/turn normal)
 - [Subagents over-applied](ddaanet/feedback_subagents_over_applied.md) — one-subagent-per-task is mis-granular; the axis is batching (one agent for several small/mechanical tasks), not agents-vs-inline; a shared mutable file rules out *parallel* agents only
