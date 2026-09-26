@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 862d9831-f887-4bc6-86c7-e1d36349ec07
-  modified: 2026-08-08T22:19:08.013Z
+  modified: 2026-09-26T15:23:59.543Z
 ---
 
 An eval that drives the real CLI grades a skill only if the skill could have
@@ -31,6 +31,8 @@ transcript as one ([[jsonl-slash-command-shape]]), and without that assertion a
 model that simply does the right thing unaided scores as a pass.
 
 A skill body edited in the working tree is not what a live session invokes —
-the plugin cache serves the old one ([[stale-plugin-code]]) — but an eval that
-copies skills into its fixture repo runs the new body, so the two disagree on
-purpose. Related: [[test-the-invocation-path]], [[green-is-not-evidence]].
+the plugin cache serves the old one (`plugin-craft:verifying-plugin-changes`) —
+but an eval that copies skills into its fixture repo runs the new body, so the
+two disagree on purpose. `craft:test-discipline` owns the rest: that a green
+suite is evidence about behaviour and never about observability, and that the
+invocation path is tested rather than the code alone.
