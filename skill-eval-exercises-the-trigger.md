@@ -27,7 +27,8 @@ been the difference. Three shapes look like coverage and are not:
   passes reads as coverage that is no longer there.
 
 Assert the `Skill` tool_use itself: an agent-invoked skill appears in the
-transcript as one ([[jsonl-slash-command-shape]]), and without that assertion a
+transcript as one (the `plugin-craft:session-transcripts` skill,
+`references/entry-shapes.md`), and without that assertion a
 model that simply does the right thing unaided scores as a pass.
 
 A skill body edited in the working tree is not what a live session invokes —
